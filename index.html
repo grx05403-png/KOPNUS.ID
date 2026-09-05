@@ -1,0 +1,3632 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kopi Nusantara — Premium Dashboard</title>
+    <style>
+        /* ===== RESET & CSS VARIABLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6F4E37;
+            --primary-light: #8B6B4F;
+            --primary-dark: #4A3228;
+            --primary-gradient: linear-gradient(135deg, #6F4E37 0%, #4A3228 100%);
+            --secondary: #C49A6C;
+            --secondary-gradient: linear-gradient(135deg, #C49A6C 0%, #A87B5A 100%);
+            --success: #2ECC71;
+            --success-gradient: linear-gradient(135deg, #2ECC71 0%, #27AE60 100%);
+            --danger: #E74C3C;
+            --danger-gradient: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);
+            --warning: #F1C40F;
+            --warning-gradient: linear-gradient(135deg, #F1C40F 0%, #F39C12 100%);
+            --info: #3498DB;
+            --info-gradient: linear-gradient(135deg, #3498DB 0%, #2980B9 100%);
+            --bg: #F8F5F0;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text: #2C2C2C;
+            --text-light: #7F7F7F;
+            --border: #E8E0D8;
+            --shadow: 0 8px 32px rgba(111, 78, 55, 0.12);
+            --shadow-hover: 0 12px 48px rgba(111, 78, 55, 0.2);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --sidebar-width: 260px;
+            --topbar-height: 76px;
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        *::-webkit-scrollbar {
+            width: 6px;
+        }
+        *::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        *::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            transition: var(--transition);
+            overflow-x: hidden;
+        }
+
+        /* ===== OVERLAY FOR MOBILE ===== */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+            backdrop-filter: blur(4px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            display: block !important;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ===== LOGIN PAGE PREMIUM ===== */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a0a05 0%, #3d1f14 30%, #6F4E37 60%, #8B6B4F 100%);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-page::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: floatBg 20s ease-in-out infinite;
+        }
+
+        .login-page::after {
+            content: '☕';
+            position: absolute;
+            font-size: 300px;
+            opacity: 0.05;
+            right: -80px;
+            bottom: -100px;
+            transform: rotate(-15deg);
+        }
+
+        @keyframes floatBg {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -30px) scale(1.1); }
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(20px);
+            padding: 48px 40px;
+            border-radius: var(--radius);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 2;
+            animation: slideUp 0.6s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .login-brand {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .login-brand .logo-icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .login-brand h1 {
+            color: var(--primary);
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .login-brand p {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .login-form label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            transition: var(--transition);
+            background: var(--bg);
+        }
+
+        .login-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(111, 78, 55, 0.1);
+            background: white;
+        }
+
+        .login-form input::placeholder {
+            color: var(--text-light);
+        }
+
+        .login-error {
+            color: var(--danger);
+            font-size: 14px;
+            margin-top: 12px;
+            text-align: center;
+            min-height: 24px;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 24px;
+            color: var(--text-light);
+            font-size: 13px;
+        }
+
+        .login-footer .demo-creds {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .login-footer .demo-creds span {
+            background: var(--bg);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        /* ===== APP SHELL ===== */
+        .app-shell {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* ===== SIDEBAR PREMIUM ===== */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--primary-gradient);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 4px 0 30px rgba(0,0,0,0.15);
+            overflow-y: auto;
+        }
+
+        .sidebar__brand {
+            padding: 28px 24px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .sidebar__brand::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 24px;
+            right: 24px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        }
+
+        .sidebar__brand-mark {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar__brand-mark .emoji {
+            font-size: 28px;
+        }
+
+        .sidebar__brand-tag {
+            font-size: 12px;
+            opacity: 0.6;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Close button for mobile sidebar - FIXED */
+        .sidebar-close-btn {
+            display: none;
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(255,255,255,0.15);
+            border: 2px solid rgba(255,255,255,0.2);
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 4px 12px;
+            border-radius: 8px;
+            transition: var(--transition);
+            z-index: 10;
+            line-height: 1.4;
+            font-weight: 700;
+        }
+
+        .sidebar-close-btn:hover {
+            background: rgba(255,255,255,0.25);
+            border-color: rgba(255,255,255,0.4);
+            transform: scale(1.05);
+        }
+
+        .sidebar-close-btn:active {
+            transform: scale(0.95);
+        }
+
+        .sidebar__nav {
+            flex: 1;
+            padding: 16px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow-y: auto;
+        }
+
+        .sidebar__nav-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.4;
+            padding: 12px 14px 4px;
+            font-weight: 700;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.65);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition);
+            width: 100%;
+            text-align: left;
+            position: relative;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) scaleX(0);
+            width: 3px;
+            height: 24px;
+            background: white;
+            border-radius: 0 4px 4px 0;
+            transition: var(--transition);
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.08);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .nav-item.active {
+            background: rgba(255,255,255,0.12);
+            color: white;
+        }
+
+        .nav-item.active::before {
+            transform: translateY(-50%) scaleX(1);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            width: 28px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: rgba(255,255,255,0.15);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .sidebar__footer {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+            flex-shrink: 0;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ===== TOPBAR PREMIUM ===== */
+        .topbar {
+            height: var(--topbar-height);
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 36px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .topbar__title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.3px;
+        }
+
+        .topbar__subtitle {
+            font-size: 13px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .topbar__right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .topbar__right .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: 8px 16px;
+            gap: 8px;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .topbar__right .search-box:focus-within {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(111, 78, 55, 0.08);
+        }
+
+        .topbar__right .search-box input {
+            border: none;
+            background: transparent;
+            padding: 4px 0;
+            font-size: 13px;
+            width: 140px;
+            outline: none;
+        }
+
+        .branch-select {
+            padding: 8px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            background: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .branch-select:hover {
+            border-color: var(--primary-light);
+        }
+
+        .branch-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(111, 78, 55, 0.08);
+        }
+
+        .owner-chip {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 14px 6px 6px;
+            border-radius: 50px;
+            background: var(--bg);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .owner-chip:hover {
+            background: var(--border);
+        }
+
+        .owner-chip__avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .owner-chip__name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .owner-chip__role {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        /* ===== HAMBURGER MENU BUTTON ===== */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            line-height: 1;
+            width: 44px;
+            height: 44px;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .hamburger:hover {
+            background: var(--bg);
+        }
+
+        .hamburger .hamburger-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 24px;
+        }
+
+        .hamburger .hamburger-icon span {
+            display: block;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+
+        .hamburger.active .hamburger-icon span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 6px);
+        }
+
+        .hamburger.active .hamburger-icon span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active .hamburger-icon span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -6px);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg);
+        }
+
+        /* ===== PAGES ===== */
+        .page {
+            display: none;
+            padding: 28px 36px 44px;
+            flex: 1;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .page-head .title-section h1 {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-head .title-section p {
+            color: var(--text-light);
+            font-size: 14px;
+            -webkit-text-fill-color: var(--text-light);
+        }
+
+        /* ===== CONTROLS ===== */
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .segmented {
+            display: flex;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: 4px;
+            gap: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .segmented button {
+            padding: 6px 18px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .segmented button.active {
+            background: white;
+            color: var(--text);
+            box-shadow: var(--shadow);
+        }
+
+        .segmented button:hover:not(.active) {
+            color: var(--text);
+        }
+
+        /* ===== BUTTONS PREMIUM ===== */
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0);
+            transition: var(--transition);
+        }
+
+        .btn:hover::after {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(111, 78, 55, 0.3);
+        }
+
+        .btn-success {
+            background: var(--success-gradient);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.3);
+        }
+
+        .btn-danger {
+            background: var(--danger-gradient);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+        }
+
+        .btn-info {
+            background: var(--info-gradient);
+            color: white;
+        }
+
+        .btn-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.25);
+            color: rgba(255,255,255,0.7);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        .btn-sm {
+            padding: 6px 16px;
+            font-size: 12px;
+            border-radius: 6px;
+        }
+
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* ===== CARDS PREMIUM ===== */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .card__head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .card__head h2 {
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card__head h2 .icon {
+            font-size: 22px;
+        }
+
+        .hint {
+            font-size: 13px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* ===== STAT GRID PREMIUM ===== */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 24px 22px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-card .icon-wrap {
+            display: inline-flex;
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            margin-bottom: 12px;
+            font-size: 28px;
+        }
+
+        .stat-card__label {
+            font-size: 13px;
+            color: var(--text-light);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card__value {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 4px 0 6px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-card__change {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .stat-card__change.positive {
+            color: var(--success);
+        }
+
+        .stat-card__change.negative {
+            color: var(--danger);
+        }
+
+        .stat-card__trend {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 12px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            background: var(--bg);
+        }
+
+        .stat-card__trend.up {
+            background: #D5F5E3;
+            color: #1A7A3A;
+        }
+
+        .stat-card__trend.down {
+            background: #FADBD8;
+            color: #B03A2E;
+        }
+
+        /* ===== GRID LAYOUTS ===== */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        /* ===== CHARTS ===== */
+        .chart-wrap {
+            min-height: 220px;
+            position: relative;
+        }
+
+        /* ===== TABLES PREMIUM ===== */
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th {
+            text-align: left;
+            padding: 14px 18px;
+            background: var(--bg);
+            font-weight: 600;
+            border-bottom: 2px solid var(--border);
+            color: var(--text-light);
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        th.num, td.num {
+            text-align: right;
+        }
+
+        tr:hover td {
+            background: rgba(111, 78, 55, 0.03);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ===== BRANCH GRID PREMIUM ===== */
+        .branch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .branch-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.5);
+            position: relative;
+        }
+
+        .branch-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .branch-card__rank {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 28px;
+            opacity: 0.15;
+        }
+
+        .branch-card__name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .branch-card__location {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+
+        .branch-card__stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .branch-card__stat {
+            background: var(--bg);
+            padding: 14px;
+            border-radius: var(--radius-sm);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .branch-card__stat:hover {
+            background: var(--border);
+        }
+
+        .branch-card__stat .value {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .branch-card__stat .label {
+            font-size: 11px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .branch-card__progress {
+            margin-top: 16px;
+            height: 6px;
+            background: var(--bg);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .branch-card__progress .bar {
+            height: 100%;
+            background: var(--primary-gradient);
+            border-radius: 4px;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ===== TOP MENU LIST ===== */
+        .top-menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .top-menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 18px;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .top-menu-item:hover {
+            transform: translateX(6px);
+            background: var(--border);
+        }
+
+        .top-menu-item .rank {
+            font-weight: 800;
+            color: var(--primary);
+            width: 32px;
+            font-size: 15px;
+        }
+
+        .top-menu-item .name {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .top-menu-item .sold {
+            font-size: 13px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        /* ===== STATUS BADGE ===== */
+        .status-badge {
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-badge.baik {
+            background: #D5F5E3;
+            color: #1A7A3A;
+        }
+
+        .status-badge.sedang {
+            background: #FDEBD0;
+            color: #B9770E;
+        }
+
+        .status-badge.kritis {
+            background: #FADBD8;
+            color: #B03A2E;
+        }
+
+        .status-badge.sukses {
+            background: #D5F5E3;
+            color: #1A7A3A;
+        }
+
+        .status-badge.pending {
+            background: #FDEBD0;
+            color: #B9770E;
+        }
+
+        .status-badge.baru {
+            background: #D6EAF8;
+            color: #1A5276;
+        }
+
+        /* ===== MODAL PREMIUM ===== */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 560px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 28px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            color: var(--text-light);
+            padding: 0 8px;
+            line-height: 1;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--text);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 28px;
+        }
+
+        .modal-body .form-group {
+            margin-bottom: 18px;
+        }
+
+        .modal-body label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .modal-body input,
+        .modal-body select,
+        .modal-body textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            transition: var(--transition);
+            font-family: inherit;
+            background: var(--bg);
+        }
+
+        .modal-body input:focus,
+        .modal-body select:focus,
+        .modal-body textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(111, 78, 55, 0.08);
+            background: white;
+        }
+
+        .modal-body .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: flex-end;
+        }
+
+        /* ===== NOTIFICATION PREMIUM ===== */
+        .notification {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            padding: 16px 28px;
+            border-radius: var(--radius);
+            color: white;
+            font-weight: 600;
+            z-index: 300;
+            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            display: none;
+            align-items: center;
+            gap: 12px;
+            max-width: 400px;
+        }
+
+        .notification.show {
+            display: flex;
+        }
+
+        .notification.success {
+            background: var(--success-gradient);
+        }
+
+        .notification.error {
+            background: var(--danger-gradient);
+        }
+
+        .notification.info {
+            background: var(--info-gradient);
+        }
+
+        .notification.warning {
+            background: var(--warning-gradient);
+            color: var(--text);
+        }
+
+        .notification .notif-icon {
+            font-size: 24px;
+        }
+
+        /* ===== WIDGETS ===== */
+        .widget-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+        }
+
+        .widget-item {
+            background: var(--bg);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .widget-item:hover {
+            transform: scale(1.03);
+        }
+
+        .widget-item .number {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .widget-item .label {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .animate-pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1200px) {
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .grid-3 {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* Sidebar mobile */
+            .sidebar {
+                transform: translateX(-100%);
+                width: 300px;
+                border-radius: 0 20px 20px 0;
+                box-shadow: 4px 0 40px rgba(0,0,0,0.3);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-close-btn {
+                display: block !important;
+            }
+
+            .sidebar-overlay.active {
+                display: block !important;
+            }
+
+            .main {
+                margin-left: 0 !important;
+            }
+
+            /* Hamburger show */
+            .hamburger {
+                display: flex !important;
+            }
+
+            .topbar {
+                padding: 0 16px;
+                flex-wrap: wrap;
+                height: auto;
+                padding: 12px 16px;
+                gap: 8px;
+            }
+
+            .topbar-left {
+                flex: 1;
+            }
+
+            .topbar__title {
+                font-size: 17px;
+            }
+
+            .topbar__subtitle {
+                font-size: 12px;
+            }
+
+            .topbar__right {
+                flex-wrap: wrap;
+                width: 100%;
+                justify-content: space-between;
+                gap: 8px;
+            }
+
+            .topbar__right .search-box {
+                flex: 1;
+                min-width: 120px;
+            }
+
+            .topbar__right .search-box input {
+                width: 100%;
+            }
+
+            .branch-select {
+                flex: 1;
+                min-width: 100px;
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+
+            .owner-chip__name,
+            .owner-chip__role {
+                display: none;
+            }
+
+            .page {
+                padding: 16px;
+            }
+
+            .page-head .title-section h1 {
+                font-size: 20px;
+            }
+
+            .stat-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .stat-card {
+                padding: 16px;
+            }
+
+            .stat-card__value {
+                font-size: 24px;
+            }
+
+            .branch-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .grid-3 {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .grid-4 {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .card {
+                padding: 16px 18px;
+            }
+
+            .card__head h2 {
+                font-size: 16px;
+            }
+
+            .segmented button {
+                padding: 4px 12px;
+                font-size: 12px;
+            }
+
+            .controls {
+                gap: 8px;
+            }
+
+            .btn {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+
+            .btn-sm {
+                padding: 4px 12px;
+                font-size: 11px;
+            }
+
+            .modal-content {
+                margin: 16px;
+                max-width: 100%;
+            }
+
+            .notification {
+                top: 12px;
+                right: 12px;
+                left: 12px;
+                max-width: 100%;
+                font-size: 13px;
+                padding: 12px 18px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 10px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stat-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+
+            .page-head {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .controls {
+                flex-wrap: wrap;
+                width: 100%;
+            }
+
+            .segmented {
+                flex-wrap: wrap;
+                width: 100%;
+            }
+
+            .segmented button {
+                flex: 1;
+                text-align: center;
+                font-size: 11px;
+                padding: 6px 8px;
+            }
+
+            .login-container {
+                padding: 32px 24px;
+            }
+
+            .login-brand h1 {
+                font-size: 24px;
+            }
+
+            .sidebar {
+                width: 280px;
+            }
+
+            .topbar__right .search-box input {
+                font-size: 12px;
+            }
+
+            .branch-select {
+                font-size: 11px;
+                padding: 4px 10px;
+            }
+
+            .hamburger {
+                font-size: 24px;
+                width: 36px;
+                height: 36px;
+            }
+
+            .hamburger .hamburger-icon {
+                width: 20px;
+                gap: 4px;
+            }
+
+            .hamburger .hamburger-icon span {
+                height: 2.5px;
+            }
+
+            .sidebar-close-btn {
+                font-size: 18px;
+                padding: 2px 10px;
+                top: 12px;
+                right: 12px;
+            }
+        }
+
+        /* ===== DARK MODE OVERRIDES ===== */
+        body.dark {
+            --bg: #0f0e17;
+            --card-bg: rgba(26, 26, 46, 0.95);
+            --text: #e0e0e0;
+            --text-light: #a0a0a0;
+            --border: #2a2a4a;
+            --shadow: 0 8px 32px rgba(0,0,0,0.4);
+            --shadow-hover: 0 12px 48px rgba(0,0,0,0.5);
+        }
+
+        body.dark .topbar {
+            background: rgba(26, 26, 46, 0.9);
+        }
+
+        body.dark .stat-card,
+        body.dark .branch-card,
+        body.dark .card {
+            border-color: rgba(255,255,255,0.05);
+        }
+
+        body.dark .branch-card__stat,
+        body.dark .top-menu-item,
+        body.dark .widget-item,
+        body.dark .segmented {
+            background: rgba(255,255,255,0.05);
+        }
+
+        body.dark .segmented button.active {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        body.dark .login-container {
+            background: rgba(26, 26, 46, 0.97);
+        }
+
+        body.dark .login-brand h1 {
+            color: var(--secondary);
+        }
+
+        body.dark .modal-content {
+            background: #1a1a2e;
+            color: #e0e0e0;
+        }
+
+        body.dark .modal-body input,
+        body.dark .modal-body select,
+        body.dark .modal-body textarea {
+            background: rgba(255,255,255,0.05);
+            color: #e0e0e0;
+            border-color: #2a2a4a;
+        }
+
+        body.dark .modal-body input:focus,
+        body.dark .modal-body select:focus,
+        body.dark .modal-body textarea:focus {
+            background: rgba(255,255,255,0.08);
+        }
+
+        body.dark th {
+            background: rgba(255,255,255,0.05);
+        }
+
+        body.dark tr:hover td {
+            background: rgba(255,255,255,0.03);
+        }
+
+        body.dark .sidebar-overlay {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        body.dark .sidebar-close-btn {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.15);
+        }
+
+        body.dark .sidebar-close-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            .sidebar,
+            .topbar__right,
+            .hamburger,
+            .controls,
+            .btn {
+                display: none !important;
+            }
+            .main {
+                margin-left: 0 !important;
+            }
+            .page {
+                padding: 20px !important;
+            }
+            .card {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="login-page" class="login-page">
+        <div class="login-container">
+            <div class="login-brand">
+                <span class="logo-icon animate-float">☕</span>
+                <h1>Kopi Nusantara</h1>
+                <p>Premium Dashboard Management</p>
+            </div>
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="username">👤 Username</label>
+                    <input type="text" id="username" placeholder="Masukkan username" value="admin" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">🔒 Password</label>
+                    <input type="password" id="password" placeholder="Masukkan password" value="admin123" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">🚀 Login</button>
+                <div id="login-error" class="login-error"></div>
+            </form>
+            <div class="login-footer">
+                <small>🔑 Demo Account</small>
+                <div class="demo-creds">
+                    <span>admin / admin123</span>
+                    <span>manager / manager123</span>
+                    <span>staff / staff123</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Overlay (for mobile) -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Main App -->
+    <div id="app" class="app-shell" style="display:none;">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <button class="sidebar-close-btn" id="sidebarCloseBtn">✕</button>
+            <div class="sidebar__brand">
+                <div class="sidebar__brand-mark">
+                    <span class="emoji">☕</span>
+                    Kopi Nusantara
+                </div>
+                <div class="sidebar__brand-tag">Premium Management System</div>
+            </div>
+
+            <nav class="sidebar__nav">
+                <div class="sidebar__nav-label">Main Menu</div>
+                <button class="nav-item active" data-page="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                    <span class="nav-badge">Live</span>
+                </button>
+                <button class="nav-item" data-page="income">
+                    <span class="nav-icon">💰</span>
+                    <span>Pemasukan</span>
+                </button>
+                <button class="nav-item" data-page="transactions">
+                    <span class="nav-icon">🧾</span>
+                    <span>Transaksi</span>
+                    <span class="nav-badge" id="tx-badge">0</span>
+                </button>
+                <button class="nav-item" data-page="stock">
+                    <span class="nav-icon">📦</span>
+                    <span>Manajemen Stok</span>
+                </button>
+                <button class="nav-item" data-page="stock-add">
+                    <span class="nav-icon">📥</span>
+                    <span>Riwayat Stok</span>
+                </button>
+                
+                <div class="sidebar__nav-label" style="margin-top:12px;">Analytics</div>
+                <button class="nav-item" data-page="top-menu">
+                    <span class="nav-icon">🏆</span>
+                    <span>Menu Terlaris</span>
+                </button>
+                <button class="nav-item" data-page="branches">
+                    <span class="nav-icon">📍</span>
+                    <span>Cabang</span>
+                </button>
+                <button class="nav-item" data-page="reports">
+                    <span class="nav-icon">📄</span>
+                    <span>Laporan</span>
+                </button>
+                
+                <div class="sidebar__nav-label" style="margin-top:12px;">System</div>
+                <button class="nav-item" data-page="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Pengaturan</span>
+                </button>
+            </nav>
+
+            <div class="sidebar__footer">
+                <button id="logout-btn" class="btn btn-outline btn-sm">🚪 Logout</button>
+                <span style="font-size: 0.75rem; opacity: 0.4;">v3.0 Premium</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="hamburger" id="hamburger-btn">
+                        <span class="hamburger-icon">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </button>
+                    <div>
+                        <div class="topbar__title">✨ Dashboard</div>
+                        <div class="topbar__subtitle" id="topbar-subtitle">Memantau 4 cabang secara real-time</div>
+                    </div>
+                </div>
+                <div class="topbar__right">
+                    <div class="search-box">
+                        <span>🔍</span>
+                        <input type="text" placeholder="Cari transaksi..." id="global-search" oninput="searchTransactions(this.value)">
+                    </div>
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">🌙</button>
+                    <select class="branch-select" id="global-branch-select">
+                        <option value="all">🌐 Semua Cabang</option>
+                    </select>
+                    <div class="owner-chip" id="user-chip">
+                        <div class="owner-chip__avatar" id="user-avatar">AD</div>
+                        <div>
+                            <div class="owner-chip__name" id="user-name">Admin</div>
+                            <div class="owner-chip__role" id="user-role">Pemilik</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- ===== PAGE: DASHBOARD ===== -->
+            <div id="page-dashboard" class="page active">
+                <div class="page-head">
+                    <div class="title-section">
+                        <h1>📊 Overview Dashboard</h1>
+                        <p>Ringkasan performa Kopi Nusantara secara real-time</p>
+                    </div>
+                    <div class="controls">
+                        <div class="segmented" data-period-group="dashboard">
+                            <button data-period="today">📅 Hari ini</button>
+                            <button data-period="week">📆 Minggu</button>
+                            <button class="active" data-period="month">📈 Bulan</button>
+                        </div>
+                        <button class="btn btn-primary btn-sm" onclick="refreshData()">🔄 Refresh</button>
+                    </div>
+                </div>
+
+                <div class="stat-grid" id="dash-stat-grid"></div>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card__head">
+                            <h2><span class="icon">📈</span> Tren Pemasukan</h2>
+                            <span class="hint" id="dash-income-hint"></span>
+                        </div>
+                        <div class="chart-wrap" id="dash-income-chart"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card__head">
+                            <h2><span class="icon">🏆</span> Menu Paling Laku</h2>
+                            <span class="hint">Top 5</span>
+                        </div>
+                        <div class="top-menu-list" id="dash-top-menu"></div>
+                    </div>
+                </div>
+
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card__head">
+                            <h2><span class="icon">🏪</span> Performa Cabang</h2>
+                        </div>
+                        <div id="branch-performance"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card__head">
+                            <h2><span class="icon">⏰</span> Jam Sibuk</h2>
+                        </div>
+                        <div id="peak-hours"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card__head">
+                            <h2><span class="icon">📊</span> Ringkasan</h2>
+                        </div>
+                        <div id="quick-summary"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__head">
+                        <h2><span class="icon">⚡</span> Aktivitas Terbaru</h2>
+                        <span class="hint">Live updates</span>
+                    </div>
+                    <div id="recent-activity"></div>
+                </div>
+            </div>
+
+            <!-- ===== PAGE: INCOME ===== -->
+            <div id="page-income" class="page">
+                <div class="page-head">
+                    <div class="title-section">
+                        <h1>💰 Pemasukan</h1>
+                        <p>Analisis pemasukan per cabang dan periode</p>
+                    </div>
+                    <div class="controls">
+                        <div class="segmented" data-period-group="income">
+                            <button data-period="today">Hari ini</button>
+                            <button data-period="week">Minggu</button>
+                            <button class="active" data-period="month">Bulan</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;" id="income-stat-grid"></div>
+                <div class="card">
+                    <div class="card__head">
+                        <h2><span class="icon">📊</span> Grafik Pemasukan</h2>
+                        <span class="hint" id="income-chart-hint"></span>
+                    </div>
+                    <div class="chart-wrap" id="income-chart"></div>
+                </div>
+            </div>
+
+            <!-- ===== PAGE: TRANSACTIONS ===== -->
+            <div id="page-transactions" class="page">
+                <div class="page-head">
+                    <div class="title-section">
+                        <h1>🧾 Transaksi</h1>
+                        <p>Riwayat transaksi POS secara lengkap</p>
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button class="btn btn-primary btn-sm" onclick="showAddTransaction()">➕ Tambah</button>
+                        <button class="btn btn-success btn-sm" onclick="exportData()">📤 Export</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card__head">
+                        <h2><span class="icon">📋</span> Daftar Transaksi</h2>
+                        <span class="hint" id="tx-count-hint"></span>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tanggal</th>
+                                    <th>Cabang</th>
+                                    <th>Menu</th>
+                                    <th class="num">Qty</th>
+                                    <th class="num">Total</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tx-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== PAGE: STOCK ===== -->
+            <div id="page-stock" class="page">
+                <div class="page-head">
+                    <div class="title-section">
+                        <h1>📦 Manajemen Stok</h1>
+                        <p>Monitoring stok bahan baku real-time</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary btn-sm" onclick="showAddStock()">➕ Tambah Stok</button>
+                    </div>
+                </div>
+                <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);" id="stock-summary"></div>
+                <div class="card">
+                    <div class="card__head">
+                        <h2><span class="icon">📋</span> Stok Tersedia</h2>
+                        <span class="hint">⏱️ Terupdate real-time</span>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Bahan</th>
+                                    <th class="num">Stok</th>
+                                    <th>Satuan</th>
+                                    <th>Cabang</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stock-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== PAGE: STOCK ADD ===== -->
+            <div id="page-stock-add" class="page">
+                <div class="page-head">
+                    <div class="title-section">
+                        <h1>📥 Riwayat Stok</h1>
+                        <p>History penambahan stok bahan baku</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card__head">
+                        <h2><span class="icon">📋</span> Riwayat Penambahan</h2>
+                        <span class="hint" id="stock-add-hint"></span>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Bahan</th>
+                                    <th class="num">Jumlah</th>
+                                    <th>Satuan</th>
+                                    <th>Cabang</th>
+                                    <th>Supplier</th>
+                                    <th>Tanggal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stock-add-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== PAGE: TOP MENU ===== -->
+            <div id="page-top-menu" class="page">
+                <div class="page-head">
+                    <div class="title-section">
+                        <h1>🏆 Menu Terlaris</h1>
+                        <p>Analisis menu paling favorit pelanggan</p>
+                    </div>
+                    <div class="controls">
+                        <div class="segmented" data-period-group="top-menu">
+                            <button data-period="today">Hari ini</button>
+                            <button data-period="week">Minggu</button>
+                            <button class="active" data-period="month">Bulan</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card__head">
+                        <h2><span class="icon">📊</span> Peringkat Penjualan</h2>
+                        <span class="hint" id="top-menu-hint"></span>
+                    </div>
+                    <div class="chart-wrap" id="top-menu-chart"></div>
+                </div>
+            </div>
+
+            <!-- ===== PAGE: BRANCHES ===== -->
+            <div id="page-branches" class="page">
+                <div class="page-head">
+                    <div class="title-section">
+                        <h1>📍 Manajemen Cabang</h1>
+                        <p>Perbandingan performa seluruh cabang</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary btn-sm" onclick="showAddBranch()">➕ Tambah Cabang</button>
+                    </div>
+                </div>
+                <div class="branch-grid" id="branch-grid"></div>
+            </div>
+
+            <!-- ===== PAGE: REPORTS ===== -->
+            <div id="page-reports" class="page">
+                <div class="page-head">
+                    <div class="title-section">
+                        <h1>📄 Laporan Keuangan</h1>
+                        <p>Generate dan export laporan bisnis</p>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card__head">
+                            <h2><span class="icon">📊</span> Generate Laporan</h2>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:16px;">
+                            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                                <select id="report-period" style="padding:10px 16px;border:2px solid var(--border);border-radius:var(--radius-sm);flex:1;">
+                                    <option value="today">📅 Hari Ini</option>
+                                    <option value="week">📆 Minggu Ini</option>
+                                    <option value="month" selected>📈 Bulan Ini</option>
+                                    <option value="quarter">📊 3 Bulan</option>
+                                    <option value="year">📉 Tahun Ini</option>
+                                </select>
+                                <select id="report-branch" style="padding:10px 16px;border:2px solid var(--border);border-radius:var(--radius-sm);flex:1;">
+                                    <option value="all">🌐 Semua Cabang</option>
+                                </select>
+                            </div>
+                            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                <button class="btn btn-primary" onclick="generateReport('pdf')">📄 Export PDF</button>
+                                <button class="btn btn-success" onclick="generateReport('excel')">📊 Export Excel</button>
+                                <button class="btn btn-info" onclick="generateReport('print')">🖨️ Print</button>
+                            </div>
+                            <div id="report-preview" style="margin-top:12px;padding:20px;background:var(--bg);border-radius:var(--radius-sm);min-height:120px;border:2px dashed var(--border);">
+                                <p style="color:var(--text-light);text-align:center;padding:20px 0;">
+                                    📋 Pilih periode dan klik export untuk generate laporan
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card__head">
+                            <h2><span class="icon">📈</span> Statistik</h2>
+                        </div>
+                        <div id="report-stats"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== PAGE: SETTINGS ===== -->
+            <div id="page-settings" class="page">
+                <div class="page-head">
+                    <div class="title-section">
+                        <h1>⚙️ Pengaturan</h1>
+                        <p>Konfigurasi aplikasi dan preferensi</p>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card__head">
+                            <h2><span class="icon">👤</span> Profile</h2>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:16px;">
+                            <div>
+                                <label style="font-weight:600;display:block;margin-bottom:4px;">Nama Lengkap</label>
+                                <input type="text" id="settings-name" style="width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:14px;background:var(--bg);">
+                            </div>
+                            <div>
+                                <label style="font-weight:600;display:block;margin-bottom:4px;">Email</label>
+                                <input type="email" id="settings-email" style="width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:14px;background:var(--bg);">
+                            </div>
+                            <div>
+                                <label style="font-weight:600;display:block;margin-bottom:4px;">Role</label>
+                                <input type="text" id="settings-role" style="width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:14px;background:var(--bg);" disabled>
+                            </div>
+                            <button class="btn btn-primary" onclick="saveSettings()">💾 Simpan Perubahan</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card__head">
+                            <h2><span class="icon">⚙️</span> Preferensi</h2>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:16px;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);">
+                                <span>🌙 Dark Mode</span>
+                                <button class="btn btn-sm" onclick="toggleTheme()" style="background:var(--bg);color:var(--text);padding:6px 16px;border-radius:var(--radius-sm);">Toggle</button>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);">
+                                <span>🔔 Notifikasi</span>
+                                <select id="settings-notif" style="padding:6px 12px;border:2px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);">
+                                    <option value="all">Semua</option>
+                                    <option value="important">Penting</option>
+                                    <option value="none">Tidak Ada</option>
+                                </select>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);">
+                                <span>📊 Default Periode</span>
+                                <select id="settings-period" style="padding:6px 12px;border:2px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);">
+                                    <option value="today">Hari Ini</option>
+                                    <option value="week">Minggu Ini</option>
+                                    <option value="month" selected>Bulan Ini</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-danger" onclick="resetData()">🔄 Reset Data Demo</button>
+                            <button class="btn btn-info" onclick="exportAllData()">📤 Export All Data</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Tambah Data</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <span class="notif-icon">✅</span>
+        <span id="notif-message">Success!</span>
+    </div>
+
+    <script>
+        // ==============================
+        // ===== DATA STORE =====
+        // ==============================
+        const DATA = {
+            branches: [
+                { id: 1, name: 'Kopi Nusantara - Menteng', location: 'Jakarta Pusat', address: 'Jl. HOS Cokroaminoto No. 12' },
+                { id: 2, name: 'Kopi Nusantara - Senayan', location: 'Jakarta Selatan', address: 'Jl. Senayan Raya No. 45' },
+                { id: 3, name: 'Kopi Nusantara - Kelapa Gading', location: 'Jakarta Utara', address: 'Jl. Kelapa Gading Boulevard No. 78' },
+                { id: 4, name: 'Kopi Nusantara - Bandung', location: 'Bandung', address: 'Jl. Braga No. 23' }
+            ],
+            menu: [
+                { id: 1, name: 'Espresso', price: 18000, category: 'Kopi' },
+                { id: 2, name: 'Cappuccino', price: 25000, category: 'Kopi' },
+                { id: 3, name: 'Latte', price: 27000, category: 'Kopi' },
+                { id: 4, name: 'Americano', price: 20000, category: 'Kopi' },
+                { id: 5, name: 'Mocha', price: 28000, category: 'Kopi' },
+                { id: 6, name: 'Matcha Latte', price: 30000, category: 'Non-Kopi' },
+                { id: 7, name: 'Croissant', price: 15000, category: 'Makanan' },
+                { id: 8, name: 'Cheesecake', price: 22000, category: 'Makanan' },
+                { id: 9, name: 'Affogato', price: 32000, category: 'Kopi' },
+                { id: 10, name: 'Cold Brew', price: 23000, category: 'Kopi' }
+            ],
+            ingredients: [
+                { id: 1, name: 'Kopi Arabica', unit: 'kg' },
+                { id: 2, name: 'Susu UHT', unit: 'liter' },
+                { id: 3, name: 'Gula', unit: 'kg' },
+                { id: 4, name: 'Tepung', unit: 'kg' },
+                { id: 5, name: 'Cokelat Bubuk', unit: 'kg' },
+                { id: 6, name: 'Matcha', unit: 'kg' },
+                { id: 7, name: 'Krim Kental', unit: 'liter' },
+                { id: 8, name: 'Sirup Vanila', unit: 'liter' }
+            ],
+            transactions: [],
+            stocks: [],
+            stockAdditions: [],
+            settings: {
+                theme: 'light',
+                notifications: 'all',
+                defaultPeriod: 'month'
+            },
+            _nextTxId: 1,
+            _nextStockId: 1,
+            _nextAddId: 1
+        };
+
+        // ==============================
+        // ===== USER CREDENTIALS =====
+        // ==============================
+        const USERS = [
+            { username: 'admin', password: 'admin123', name: 'Administrator', role: 'Pemilik', email: 'admin@kopinusantara.com' },
+            { username: 'manager', password: 'manager123', name: 'Manager Utama', role: 'Manager', email: 'manager@kopinusantara.com' },
+            { username: 'staff', password: 'staff123', name: 'Staff Operasional', role: 'Staff', email: 'staff@kopinusantara.com' }
+        ];
+
+        // ==============================
+        // ===== INITIALIZE DATA =====
+        // ==============================
+        function initData() {
+            const now = new Date();
+            const menuNames = DATA.menu.map(m => m.name);
+            const menuPrices = DATA.menu.reduce((acc, m) => { acc[m.name] = m.price; return acc; }, {});
+            const branchNames = DATA.branches.map(b => b.name);
+            
+            for (let i = 0; i < 120; i++) {
+                const d = new Date(now);
+                d.setDate(d.getDate() - Math.floor(Math.random() * 30));
+                d.setHours(Math.floor(Math.random() * 12) + 7);
+                d.setMinutes(Math.floor(Math.random() * 60));
+                
+                const menu = menuNames[Math.floor(Math.random() * menuNames.length)];
+                const qty = Math.floor(Math.random() * 4) + 1;
+                const price = menuPrices[menu] || 20000;
+                
+                DATA.transactions.push({
+                    id: DATA._nextTxId++,
+                    date: d.toISOString(),
+                    branch: branchNames[Math.floor(Math.random() * branchNames.length)],
+                    menu: menu,
+                    qty: qty,
+                    total: qty * price,
+                    status: Math.random() > 0.9 ? 'pending' : 'sukses'
+                });
+            }
+            
+            const ingredientNames = DATA.ingredients.map(i => i.name);
+            const units = DATA.ingredients.map(i => i.unit);
+            
+            for (const branch of DATA.branches) {
+                for (let i = 0; i < ingredientNames.length; i++) {
+                    const qty = Math.floor(Math.random() * 50) + 5;
+                    DATA.stocks.push({
+                        id: DATA._nextStockId++,
+                        name: ingredientNames[i],
+                        qty: qty,
+                        unit: units[i],
+                        branch: branch.name,
+                        status: qty > 30 ? 'baik' : qty > 15 ? 'sedang' : 'kritis',
+                        minStock: 10
+                    });
+                }
+            }
+            
+            const suppliers = ['PT Kopi Jaya', 'CV Bahan Baku', 'Toko Sumber Rezeki', 'Supplier Langsung', 'PT Agrobisnis'];
+            for (let i = 0; i < 35; i++) {
+                const d = new Date(now);
+                d.setDate(d.getDate() - Math.floor(Math.random() * 25));
+                
+                DATA.stockAdditions.push({
+                    id: DATA._nextAddId++,
+                    name: ingredientNames[Math.floor(Math.random() * ingredientNames.length)],
+                    qty: Math.floor(Math.random() * 25) + 5,
+                    unit: units[Math.floor(Math.random() * units.length)],
+                    branch: branchNames[Math.floor(Math.random() * branchNames.length)],
+                    date: d.toISOString(),
+                    supplier: suppliers[Math.floor(Math.random() * suppliers.length)]
+                });
+            }
+        }
+
+        // ==============================
+        // ===== APP STATE =====
+        // ==============================
+        const state = {
+            currentUser: null,
+            currentPage: 'dashboard',
+            selectedBranch: 'all',
+            periods: {
+                dashboard: 'month',
+                income: 'month',
+                topMenu: 'month'
+            },
+            theme: 'light',
+            searchQuery: '',
+            isSidebarOpen: false
+        };
+
+        // ==============================
+        // ===== DOM REFS =====
+        // ==============================
+        const $ = (sel) => document.querySelector(sel);
+        const $$ = (sel) => document.querySelectorAll(sel);
+
+        // ==============================
+        // ===== SIDEBAR TOGGLE - FIXED =====
+        // ==============================
+        function toggleSidebar() {
+            const sidebar = $('#sidebar');
+            const overlay = $('#sidebar-overlay');
+            const hamburger = $('#hamburger-btn');
+            
+            state.isSidebarOpen = !state.isSidebarOpen;
+            
+            if (state.isSidebarOpen) {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+                hamburger.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                hamburger.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = $('#sidebar');
+            const overlay = $('#sidebar-overlay');
+            const hamburger = $('#hamburger-btn');
+            
+            if (state.isSidebarOpen) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                hamburger.classList.remove('active');
+                document.body.style.overflow = '';
+                state.isSidebarOpen = false;
+            }
+        }
+
+        // ==============================
+        // ===== SIDEBAR CLOSE BUTTON - FIXED =====
+        // ==============================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Close button in sidebar
+            const closeBtn = document.getElementById('sidebarCloseBtn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    closeSidebar();
+                });
+            }
+
+            // Overlay click
+            const overlay = document.getElementById('sidebar-overlay');
+            if (overlay) {
+                overlay.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    closeSidebar();
+                });
+            }
+
+            // Hamburger button
+            const hamburger = document.getElementById('hamburger-btn');
+            if (hamburger) {
+                hamburger.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleSidebar();
+                });
+            }
+        });
+
+        // Close sidebar when clicking on nav item (mobile)
+        function setupSidebarNav() {
+            $$('.nav-item').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) {
+                        closeSidebar();
+                    }
+                });
+            });
+        }
+
+        // ==============================
+        // ===== AUTH FUNCTIONS =====
+        // ==============================
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = $('#username').value.trim();
+            const password = $('#password').value.trim();
+            const errorEl = $('#login-error');
+            
+            const user = USERS.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                state.currentUser = user;
+                errorEl.textContent = '';
+                $('#login-page').style.display = 'none';
+                $('#app').style.display = 'flex';
+                
+                const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                $('#user-avatar').textContent = initials;
+                $('#user-name').textContent = user.name;
+                $('#user-role').textContent = user.role;
+                
+                populateBranchSelector();
+                populateReportBranch();
+                renderAll();
+                showNotification(`👋 Selamat datang, ${user.name}!`, 'success');
+            } else {
+                errorEl.textContent = '❌ Username atau password salah!';
+                errorEl.style.color = '#E74C3C';
+            }
+        }
+
+        function handleLogout() {
+            state.currentUser = null;
+            $('#app').style.display = 'none';
+            $('#login-page').style.display = 'flex';
+            $('#login-form').reset();
+            $('#login-error').textContent = '';
+            showNotification('👋 Anda telah logout', 'info');
+        }
+
+        // ==============================
+        // ===== BRANCH SELECTORS =====
+        // ==============================
+        function populateBranchSelector() {
+            const select = $('#global-branch-select');
+            select.innerHTML = '<option value="all">🌐 Semua Cabang</option>';
+            DATA.branches.forEach(b => {
+                select.innerHTML += `<option value="${b.id}">📍 ${b.name}</option>`;
+            });
+            select.value = state.selectedBranch;
+            select.onchange = (e) => {
+                state.selectedBranch = e.target.value;
+                renderAll();
+            };
+        }
+
+        function populateReportBranch() {
+            const select = $('#report-branch');
+            select.innerHTML = '<option value="all">🌐 Semua Cabang</option>';
+            DATA.branches.forEach(b => {
+                select.innerHTML += `<option value="${b.id}">📍 ${b.name}</option>`;
+            });
+        }
+
+        // ==============================
+        // ===== NAVIGATION =====
+        // ==============================
+        function navigateTo(page) {
+            state.currentPage = page;
+            
+            $$('.nav-item').forEach(el => el.classList.remove('active'));
+            const navBtn = document.querySelector(`.nav-item[data-page="${page}"]`);
+            if (navBtn) navBtn.classList.add('active');
+            
+            $$('.page').forEach(el => el.classList.remove('active'));
+            const pageEl = document.getElementById(`page-${page}`);
+            if (pageEl) pageEl.classList.add('active');
+            
+            const pageNames = {
+                dashboard: 'Memantau ' + DATA.branches.length + ' cabang secara real-time',
+                income: 'Analisis pemasukan per cabang',
+                transactions: 'Riwayat transaksi POS - ' + DATA.transactions.length + ' data',
+                stock: 'Manajemen stok bahan baku',
+                'stock-add': 'Riwayat penambahan stok',
+                'top-menu': 'Menu terlaris berdasarkan penjualan',
+                branches: 'Perbandingan kinerja cabang',
+                reports: 'Generate dan export laporan',
+                settings: 'Konfigurasi aplikasi'
+            };
+            $('#topbar-subtitle').textContent = pageNames[page] || '';
+            
+            renderAll();
+        }
+
+        // ==============================
+        // ===== PERIOD HANDLING =====
+        // ==============================
+        function setupPeriodButtons() {
+            $$('.segmented').forEach(group => {
+                const periodGroup = group.dataset.periodGroup;
+                group.querySelectorAll('button').forEach(btn => {
+                    btn.onclick = () => {
+                        group.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        state.periods[periodGroup] = btn.dataset.period;
+                        renderAll();
+                    };
+                });
+            });
+        }
+
+        // ==============================
+        // ===== FILTER FUNCTIONS =====
+        // ==============================
+        function getFilteredTransactions() {
+            const branch = state.selectedBranch;
+            const branchName = branch === 'all' ? null : DATA.branches.find(b => b.id == branch)?.name;
+            
+            let filtered = DATA.transactions;
+            if (branchName) {
+                filtered = filtered.filter(t => t.branch === branchName);
+            }
+            if (state.searchQuery) {
+                const q = state.searchQuery.toLowerCase();
+                filtered = filtered.filter(t => 
+                    t.menu.toLowerCase().includes(q) || 
+                    t.branch.toLowerCase().includes(q) ||
+                    String(t.id).includes(q)
+                );
+            }
+            return filtered;
+        }
+
+        function getTransactionsByPeriod(period, transactions) {
+            const now = new Date();
+            const start = new Date(now);
+            
+            switch(period) {
+                case 'today':
+                    start.setHours(0, 0, 0, 0);
+                    break;
+                case 'week':
+                    start.setDate(start.getDate() - 7);
+                    break;
+                case 'month':
+                default:
+                    start.setDate(start.getDate() - 30);
+                    break;
+            }
+            
+            return transactions.filter(t => new Date(t.date) >= start);
+        }
+
+        function getPeriodLabel(period) {
+            const labels = {
+                today: '📅 Hari ini',
+                week: '📆 7 hari terakhir',
+                month: '📈 30 hari terakhir'
+            };
+            return labels[period] || '30 hari terakhir';
+        }
+
+        // ==============================
+        // ===== UTILITY FUNCTIONS =====
+        // ==============================
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
+
+        function formatDate(dateStr) {
+            const d = new Date(dateStr);
+            const pad = (n) => String(n).padStart(2, '0');
+            return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+        }
+
+        function formatDateShort(dateStr) {
+            const d = new Date(dateStr);
+            const pad = (n) => String(n).padStart(2, '0');
+            return `${pad(d.getDate())}/${pad(d.getMonth()+1)}`;
+        }
+
+        function showNotification(message, type = 'info') {
+            const notif = $('#notification');
+            const msgEl = $('#notif-message');
+            const iconMap = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            };
+            notif.querySelector('.notif-icon').textContent = iconMap[type] || 'ℹ️';
+            msgEl.textContent = message;
+            notif.className = 'notification show ' + type;
+            
+            clearTimeout(notif._timeout);
+            notif._timeout = setTimeout(() => {
+                notif.classList.remove('show');
+            }, 3500);
+        }
+
+        function searchTransactions(query) {
+            state.searchQuery = query;
+            renderTransactions();
+        }
+
+        // ==============================
+        // ===== RENDER FUNCTIONS =====
+        // ==============================
+
+        // Dashboard
+        function renderDashboard() {
+            const period = state.periods.dashboard;
+            const transactions = getFilteredTransactions();
+            const periodTx = getTransactionsByPeriod(period, transactions);
+            
+            const totalTx = periodTx.length;
+            const totalIncome = periodTx.reduce((sum, t) => sum + t.total, 0);
+            const avgIncome = totalTx > 0 ? totalIncome / totalTx : 0;
+            const uniqueMenus = new Set(periodTx.map(t => t.menu)).size;
+            
+            const prevPeriod = period === 'today' ? 'today' : 'week';
+            const prevTx = getTransactionsByPeriod(prevPeriod, transactions);
+            const prevIncome = prevTx.reduce((sum, t) => sum + t.total, 0);
+            const trend = prevIncome > 0 ? ((totalIncome - prevIncome) / prevIncome * 100) : 0;
+            
+            const statGrid = $('#dash-stat-grid');
+            statGrid.innerHTML = `
+                <div class="stat-card">
+                    <div class="icon-wrap">💳</div>
+                    <div class="stat-card__label">Total Transaksi</div>
+                    <div class="stat-card__value">${totalTx}</div>
+                    <div class="stat-card__change positive">${getPeriodLabel(period)}</div>
+                    ${trend !== 0 ? `<div class="stat-card__trend ${trend > 0 ? 'up' : 'down'}">${trend > 0 ? '↑' : '↓'} ${Math.abs(trend).toFixed(1)}%</div>` : ''}
+                </div>
+                <div class="stat-card">
+                    <div class="icon-wrap">💰</div>
+                    <div class="stat-card__label">Total Pemasukan</div>
+                    <div class="stat-card__value">Rp${formatNumber(totalIncome)}</div>
+                    <div class="stat-card__change positive">${getPeriodLabel(period)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon-wrap">📊</div>
+                    <div class="stat-card__label">Rata-rata Transaksi</div>
+                    <div class="stat-card__value">Rp${formatNumber(Math.round(avgIncome))}</div>
+                    <div class="stat-card__change positive">Per transaksi</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon-wrap">🍽️</div>
+                    <div class="stat-card__label">Menu Terjual</div>
+                    <div class="stat-card__value">${uniqueMenus}</div>
+                    <div class="stat-card__change positive">Varian menu</div>
+                </div>
+            `;
+            
+            // Income trend chart
+            const chartEl = $('#dash-income-chart');
+            const sortedTx = [...periodTx].sort((a, b) => new Date(a.date) - new Date(b.date));
+            const dailyIncome = {};
+            sortedTx.forEach(t => {
+                const date = new Date(t.date).toLocaleDateString('id-ID');
+                dailyIncome[date] = (dailyIncome[date] || 0) + t.total;
+            });
+            
+            const dates = Object.keys(dailyIncome);
+            const values = Object.values(dailyIncome);
+            
+            if (dates.length === 0) {
+                chartEl.innerHTML = '<p style="text-align:center;color:var(--text-light);padding:40px 0;">📭 Belum ada data transaksi</p>';
+            } else {
+                const maxVal = Math.max(...values, 1);
+                const displayDates = dates.slice(-14);
+                chartEl.innerHTML = `
+                    <div style="display:flex;align-items:flex-end;gap:6px;height:180px;padding-top:10px;">
+                        ${displayDates.map((d) => {
+                            const val = dailyIncome[d];
+                            const height = (val / maxVal) * 160;
+                            const dateLabel = d.split('/').slice(0,2).join('/');
+                            return `
+                                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                                    <div style="width:100%;background:var(--primary-gradient);border-radius:4px 4px 0 0;height:${Math.max(height, 4)}px;min-height:4px;transition:height 0.6s cubic-bezier(0.4,0,0.2,1);"></div>
+                                    <span style="font-size:10px;color:var(--text-light);">${dateLabel}</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--text-light);">
+                        <span>💰 Total: Rp${formatNumber(totalIncome)}</span>
+                        <span>📊 ${periodTx.length} transaksi</span>
+                    </div>
+                `;
+            }
+            $('#dash-income-hint').textContent = getPeriodLabel(period);
+            
+            // Top menu
+            const menuSold = {};
+            periodTx.forEach(t => {
+                menuSold[t.menu] = (menuSold[t.menu] || 0) + t.qty;
+            });
+            const sortedMenu = Object.entries(menuSold).sort((a, b) => b[1] - a[1]).slice(0, 5);
+            const topMenuEl = $('#dash-top-menu');
+            
+            if (sortedMenu.length === 0) {
+                topMenuEl.innerHTML = '<p style="text-align:center;color:var(--text-light);padding:20px 0;">📭 Belum ada data penjualan</p>';
+            } else {
+                const medals = ['🥇', '🥈', '🥉'];
+                topMenuEl.innerHTML = sortedMenu.map(([name, qty], i) => `
+                    <div class="top-menu-item">
+                        <span class="rank">${medals[i] || '#' + (i+1)}</span>
+                        <span class="name">${name}</span>
+                        <span class="sold">${qty} terjual</span>
+                    </div>
+                `).join('');
+            }
+            
+            // Branch performance
+            const branchPerf = $('#branch-performance');
+            const branchData = {};
+            DATA.branches.forEach(b => {
+                const tx = periodTx.filter(t => t.branch === b.name);
+                branchData[b.name] = tx.reduce((sum, t) => sum + t.total, 0);
+            });
+            const maxBranch = Math.max(...Object.values(branchData), 1);
+            const sortedBranches = Object.entries(branchData).sort((a, b) => b[1] - a[1]);
+            branchPerf.innerHTML = sortedBranches.map(([name, total], i) => `
+                <div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);">
+                    <span style="font-size:14px;">${['🥇','🥈','🥉'][i] || '📍'}</span>
+                    <span style="flex:1;font-size:13px;font-weight:500;">${name.split(' - ')[1] || name}</span>
+                    <div style="flex:2;height:24px;background:var(--bg);border-radius:4px;overflow:hidden;">
+                        <div style="height:100%;background:var(--primary-gradient);border-radius:4px;width:${Math.max((total/maxBranch)*100, 4)}%;transition:width 0.8s cubic-bezier(0.4,0,0.2,1);"></div>
+                    </div>
+                    <span style="font-size:13px;font-weight:700;min-width:80px;text-align:right;">Rp${formatNumber(total)}</span>
+                </div>
+            `).join('');
+            
+            // Peak hours
+            const peakEl = $('#peak-hours');
+            const hourlyData = {};
+            periodTx.forEach(t => {
+                const hour = new Date(t.date).getHours();
+                hourlyData[hour] = (hourlyData[hour] || 0) + 1;
+            });
+            const sortedHours = Object.entries(hourlyData).sort((a, b) => b[1] - a[1]).slice(0, 5);
+            if (sortedHours.length === 0) {
+                peakEl.innerHTML = '<p style="color:var(--text-light);padding:10px 0;">📭 Belum ada data</p>';
+            } else {
+                peakEl.innerHTML = sortedHours.map(([hour, count]) => `
+                    <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);">
+                        <span>🕐 ${String(hour).padStart(2,'0')}:00 - ${String(parseInt(hour)+1).padStart(2,'0')}:00</span>
+                        <span style="font-weight:700;color:var(--primary);">${count} transaksi</span>
+                    </div>
+                `).join('');
+            }
+            
+            // Quick summary
+            const summaryEl = $('#quick-summary');
+            const totalItems = periodTx.reduce((sum, t) => sum + t.qty, 0);
+            const avgPerTx = periodTx.length > 0 ? (totalItems / periodTx.length).toFixed(1) : 0;
+            const topBranch = Object.entries(branchData).sort((a, b) => b[1] - a[1])[0];
+            summaryEl.innerHTML = `
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                    <div style="background:var(--bg);padding:14px;border-radius:var(--radius-sm);text-align:center;">
+                        <div style="font-size:24px;font-weight:800;color:var(--primary);">${totalItems}</div>
+                        <div style="font-size:12px;color:var(--text-light);">🛒 Total Item</div>
+                    </div>
+                    <div style="background:var(--bg);padding:14px;border-radius:var(--radius-sm);text-align:center;">
+                        <div style="font-size:24px;font-weight:800;color:var(--primary);">${avgPerTx}</div>
+                        <div style="font-size:12px;color:var(--text-light);">📊 Rata-rata/Transaksi</div>
+                    </div>
+                    <div style="background:var(--bg);padding:14px;border-radius:var(--radius-sm);text-align:center;grid-column:span 2;">
+                        <div style="font-size:18px;font-weight:700;color:var(--primary);">🏆 ${topBranch ? topBranch[0].split(' - ')[1] || topBranch[0] : '-'}</div>
+                        <div style="font-size:12px;color:var(--text-light);">Cabang dengan Pemasukan Tertinggi</div>
+                    </div>
+                </div>
+            `;
+            
+            // Recent activity
+            const activityEl = $('#recent-activity');
+            const recentTx = [...periodTx].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 6);
+            if (recentTx.length === 0) {
+                activityEl.innerHTML = '<p style="text-align:center;color:var(--text-light);padding:20px 0;">📭 Belum ada aktivitas</p>';
+            } else {
+                activityEl.innerHTML = recentTx.map(t => `
+                    <div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);">
+                        <span style="font-size:20px;">${t.status === 'sukses' ? '✅' : '⏳'}</span>
+                        <span style="flex:1;font-weight:500;">${t.menu}</span>
+                        <span style="color:var(--text-light);font-size:13px;">${t.branch.split(' - ')[1] || t.branch}</span>
+                        <span style="font-weight:700;color:var(--primary);">Rp${formatNumber(t.total)}</span>
+                        <span style="font-size:12px;color:var(--text-light);">${formatDateShort(t.date)}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Income Page
+        function renderIncome() {
+            const period = state.periods.income;
+            const transactions = getFilteredTransactions();
+            const periodTx = getTransactionsByPeriod(period, transactions);
+            
+            const branchStats = {};
+            DATA.branches.forEach(b => {
+                const tx = periodTx.filter(t => t.branch === b.name);
+                branchStats[b.name] = {
+                    count: tx.length,
+                    total: tx.reduce((sum, t) => sum + t.total, 0),
+                    items: tx.reduce((sum, t) => sum + t.qty, 0)
+                };
+            });
+            
+            const totalIncome = periodTx.reduce((sum, t) => sum + t.total, 0);
+            const avgIncome = periodTx.length > 0 ? totalIncome / periodTx.length : 0;
+            
+            const statGrid = $('#income-stat-grid');
+            statGrid.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-card__label">💰 Total Pemasukan</div>
+                    <div class="stat-card__value">Rp${formatNumber(totalIncome)}</div>
+                    <div class="stat-card__change positive">${getPeriodLabel(period)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card__label">📊 Rata-rata</div>
+                    <div class="stat-card__value">Rp${formatNumber(Math.round(avgIncome))}</div>
+                    <div class="stat-card__change positive">Per transaksi</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card__label">🏪 Cabang Aktif</div>
+                    <div class="stat-card__value">${Object.keys(branchStats).filter(name => branchStats[name].count > 0).length}</div>
+                    <div class="stat-card__change positive">Dari ${DATA.branches.length} cabang</div>
+                </div>
+            `;
+            
+            const chartEl = $('#income-chart');
+            const branchNames = Object.keys(branchStats);
+            const branchValues = branchNames.map(name => branchStats[name].total);
+            const maxVal = Math.max(...branchValues, 1);
+            
+            if (branchNames.length === 0 || branchValues.every(v => v === 0)) {
+                chartEl.innerHTML = '<p style="text-align:center;color:var(--text-light);padding:40px 0;">📭 Belum ada data pemasukan</p>';
+            } else {
+                const colors = ['#6F4E37', '#8B6B4F', '#C49A6C', '#4A3228', '#A87B5A'];
+                chartEl.innerHTML = `
+                    <div style="display:flex;align-items:flex-end;gap:20px;height:220px;padding-top:10px;justify-content:center;">
+                        ${branchNames.map((name, i) => {
+                            const val = branchValues[i];
+                            const height = (val / maxVal) * 180;
+                            const shortName = name.split(' - ')[1] || name;
+                            return `
+                                <div style="flex:1;max-width:140px;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                                    <div style="width:100%;background:${colors[i % colors.length]};border-radius:6px 6px 0 0;height:${Math.max(height, 4)}px;transition:height 0.8s cubic-bezier(0.4,0,0.2,1);position:relative;">
+                                        <span style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;">Rp${formatNumber(val)}</span>
+                                    </div>
+                                    <span style="font-size:12px;color:var(--text-light);text-align:center;font-weight:500;">${shortName}</span>
+                                    <span style="font-size:11px;color:var(--text-light);">${branchStats[name].count} tx</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:12px;color:var(--text-light);padding:0 12px;">
+                        <span>💰 Total: Rp${formatNumber(totalIncome)}</span>
+                        <span>📊 ${periodTx.length} transaksi</span>
+                    </div>
+                `;
+            }
+            $('#income-chart-hint').textContent = getPeriodLabel(period);
+        }
+
+        // Transactions Page
+        function renderTransactions() {
+            const transactions = getFilteredTransactions();
+            const sorted = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            const tbody = $('#tx-table-body');
+            $('#tx-count-hint').textContent = `📋 ${sorted.length} transaksi ditemukan`;
+            $('#tx-badge').textContent = sorted.length;
+            
+            if (sorted.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-light);">📭 Tidak ada transaksi</td></tr>`;
+                return;
+            }
+            
+            tbody.innerHTML = sorted.slice(0, 50).map(t => `
+                <tr>
+                    <td><strong>#${String(t.id).padStart(4, '0')}</strong></td>
+                    <td>${formatDate(t.date)}</td>
+                    <td>${t.branch}</td>
+                    <td>${t.menu}</td>
+                    <td class="num">${t.qty}</td>
+                    <td class="num" style="font-weight:700;color:var(--primary);">Rp${formatNumber(t.total)}</td>
+                    <td><span class="status-badge ${t.status}">${t.status === 'sukses' ? '✅ Sukses' : '⏳ Pending'}</span></td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="deleteTransaction(${t.id})">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Stock Page
+        function renderStock() {
+            const branch = state.selectedBranch;
+            let stocks = [...DATA.stocks];
+            
+            if (branch !== 'all') {
+                const branchName = DATA.branches.find(b => b.id == branch)?.name;
+                if (branchName) {
+                    stocks = stocks.filter(s => s.branch === branchName);
+                }
+            }
+            
+            const summaryEl = $('#stock-summary');
+            const totalItems = stocks.length;
+            const criticalItems = stocks.filter(s => s.status === 'kritis').length;
+            const goodItems = stocks.filter(s => s.status === 'baik').length;
+            summaryEl.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-card__label">📦 Total Item</div>
+                    <div class="stat-card__value">${totalItems}</div>
+                    <div class="stat-card__change positive">Bahan baku</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card__label">✅ Stok Baik</div>
+                    <div class="stat-card__value" style="color:var(--success);">${goodItems}</div>
+                    <div class="stat-card__change positive">${Math.round(goodItems/totalItems*100)}%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card__label">🔴 Stok Kritis</div>
+                    <div class="stat-card__value" style="color:var(--danger);">${criticalItems}</div>
+                    <div class="stat-card__change negative">${criticalItems > 0 ? '⚠️ Perlu perhatian' : '✅ Aman'}</div>
+                </div>
+            `;
+            
+            const tbody = $('#stock-table-body');
+            if (stocks.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--text-light);">📭 Belum ada data stok</td></tr>`;
+                return;
+            }
+            
+            const statusLabels = {
+                baik: '✅ Baik',
+                sedang: '⚠️ Sedang',
+                kritis: '🔴 Kritis'
+            };
+            
+            tbody.innerHTML = stocks.map(s => `
+                <tr>
+                    <td><strong>${s.name}</strong></td>
+                    <td class="num" style="font-weight:700;">${s.qty}</td>
+                    <td>${s.unit}</td>
+                    <td>${s.branch}</td>
+                    <td><span class="status-badge ${s.status}">${statusLabels[s.status]}</span></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="editStock(${s.id})">✏️ Edit</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Stock Additions Page
+        function renderStockAdditions() {
+            const branch = state.selectedBranch;
+            let additions = [...DATA.stockAdditions];
+            
+            if (branch !== 'all') {
+                const branchName = DATA.branches.find(b => b.id == branch)?.name;
+                if (branchName) {
+                    additions = additions.filter(a => a.branch === branchName);
+                }
+            }
+            
+            const sorted = [...additions].sort((a, b) => new Date(b.date) - new Date(a.date));
+            const tbody = $('#stock-add-table-body');
+            $('#stock-add-hint').textContent = `📋 ${sorted.length} riwayat penambahan`;
+            
+            if (sorted.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--text-light);">📭 Belum ada riwayat</td></tr>`;
+                return;
+            }
+            
+            tbody.innerHTML = sorted.slice(0, 30).map(a => `
+                <tr>
+                    <td><strong>${a.name}</strong></td>
+                    <td class="num" style="font-weight:700;color:var(--success);">+${a.qty}</td>
+                    <td>${a.unit}</td>
+                    <td>${a.branch}</td>
+                    <td>${a.supplier || '-'}</td>
+                    <td>${formatDate(a.date)}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Top Menu Page
+        function renderTopMenu() {
+            const period = state.periods.topMenu;
+            const transactions = getFilteredTransactions();
+            const periodTx = getTransactionsByPeriod(period, transactions);
+            
+            const menuSold = {};
+            periodTx.forEach(t => {
+                menuSold[t.menu] = (menuSold[t.menu] || 0) + t.qty;
+            });
+            const sorted = Object.entries(menuSold).sort((a, b) => b[1] - a[1]);
+            
+            const chartEl = $('#top-menu-chart');
+            $('#top-menu-hint').textContent = getPeriodLabel(period);
+            
+            if (sorted.length === 0) {
+                chartEl.innerHTML = '<p style="text-align:center;color:var(--text-light);padding:40px 0;">📭 Belum ada data penjualan</p>';
+                return;
+            }
+            
+            const top10 = sorted.slice(0, 10);
+            const maxVal = Math.max(...top10.map(([, qty]) => qty), 1);
+            const colors = ['#6F4E37', '#8B6B4F', '#C49A6C', '#4A3228', '#A87B5A', '#D4A574', '#E8C9A0', '#B8956E', '#8D6E4E', '#5C4033'];
+            const medals = ['🥇', '🥈', '🥉'];
+            
+            chartEl.innerHTML = `
+                <div style="display:flex;flex-direction:column;gap:10px;padding:8px 0;">
+                    ${top10.map(([name, qty], i) => {
+                        const width = (qty / maxVal) * 100;
+                        return `
+                            <div style="display:flex;align-items:center;gap:14px;">
+                                <span style="font-weight:800;color:var(--primary);width:36px;font-size:16px;">${medals[i] || `#${i+1}`}</span>
+                                <span style="width:120px;font-weight:600;font-size:14px;">${name}</span>
+                                <div style="flex:1;background:var(--bg);border-radius:6px;height:32px;overflow:hidden;position:relative;">
+                                    <div style="height:100%;background:${colors[i % colors.length]};border-radius:6px;width:${Math.max(width, 3)}%;transition:width 1s cubic-bezier(0.4,0,0.2,1);display:flex;align-items:center;padding-left:10px;color:white;font-size:13px;font-weight:700;">
+                                        ${qty}
+                                    </div>
+                                </div>
+                                <span style="font-size:13px;color:var(--text-light);min-width:60px;text-align:right;">${qty} pcs</span>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+                <div style="margin-top:16px;font-size:13px;color:var(--text-light);text-align:center;padding:12px 0;border-top:1px solid var(--border);">
+                    📊 Total ${sorted.length} menu terjual · ${periodTx.length} transaksi
+                </div>
+            `;
+        }
+
+        // Branches Page
+        function renderBranches() {
+            const period = 'month';
+            const transactions = getTransactionsByPeriod(period, DATA.transactions);
+            
+            const branchStats = {};
+            DATA.branches.forEach(b => {
+                const tx = transactions.filter(t => t.branch === b.name);
+                const totalIncome = tx.reduce((sum, t) => sum + t.total, 0);
+                const uniqueMenus = new Set(tx.map(t => t.menu)).size;
+                branchStats[b.name] = {
+                    count: tx.length,
+                    total: totalIncome,
+                    avg: tx.length > 0 ? totalIncome / tx.length : 0,
+                    menus: uniqueMenus,
+                    items: tx.reduce((sum, t) => sum + t.qty, 0)
+                };
+            });
+            
+            const sortedBranches = [...DATA.branches].sort((a, b) => {
+                return (branchStats[b.name]?.total || 0) - (branchStats[a.name]?.total || 0);
+            });
+            
+            const grid = $('#branch-grid');
+            const maxIncome = Math.max(...Object.values(branchStats).map(s => s.total), 1);
+            const medals = ['🥇', '🥈', '🥉'];
+            
+            grid.innerHTML = sortedBranches.map((b, index) => {
+                const stats = branchStats[b.name] || { count: 0, total: 0, avg: 0, menus: 0, items: 0 };
+                const percentage = (stats.total / maxIncome) * 100;
+                const rank = index < 3 ? medals[index] : `#${index+1}`;
+                return `
+                    <div class="branch-card">
+                        <div class="branch-card__rank">${rank}</div>
+                        <div class="branch-card__name">📍 ${b.name}</div>
+                        <div class="branch-card__location">${b.location}</div>
+                        <div class="branch-card__stats">
+                            <div class="branch-card__stat">
+                                <div class="value">${stats.count}</div>
+                                <div class="label">🛒 Transaksi</div>
+                            </div>
+                            <div class="branch-card__stat">
+                                <div class="value">Rp${formatNumber(stats.total)}</div>
+                                <div class="label">💰 Pemasukan</div>
+                            </div>
+                            <div class="branch-card__stat">
+                                <div class="value">Rp${formatNumber(Math.round(stats.avg))}</div>
+                                <div class="label">📊 Rata-rata</div>
+                            </div>
+                            <div class="branch-card__stat">
+                                <div class="value">${stats.menus}</div>
+                                <div class="label">🍽️ Menu</div>
+                            </div>
+                        </div>
+                        <div class="branch-card__progress">
+                            <div class="bar" style="width:${percentage}%;"></div>
+                        </div>
+                        <div style="margin-top:8px;font-size:11px;color:var(--text-light);text-align:center;">
+                            ${stats.items} item terjual
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Reports Page
+        function renderReports() {
+            const statsEl = $('#report-stats');
+            const allTx = DATA.transactions;
+            const totalIncome = allTx.reduce((sum, t) => sum + t.total, 0);
+            const totalTx = allTx.length;
+            const uniqueMenus = new Set(allTx.map(t => t.menu)).size;
+            const avgTx = totalTx > 0 ? totalIncome / totalTx : 0;
+            const totalItems = allTx.reduce((sum, t) => sum + t.qty, 0);
+            
+            statsEl.innerHTML = `
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div style="background:var(--bg);padding:18px;border-radius:var(--radius-sm);text-align:center;">
+                        <div style="font-size:28px;font-weight:800;color:var(--primary);">Rp${formatNumber(totalIncome)}</div>
+                        <div style="font-size:12px;color:var(--text-light);">💰 Total Pemasukan</div>
+                    </div>
+                    <div style="background:var(--bg);padding:18px;border-radius:var(--radius-sm);text-align:center;">
+                        <div style="font-size:28px;font-weight:800;color:var(--primary);">${totalTx}</div>
+                        <div style="font-size:12px;color:var(--text-light);">🧾 Total Transaksi</div>
+                    </div>
+                    <div style="background:var(--bg);padding:18px;border-radius:var(--radius-sm);text-align:center;">
+                        <div style="font-size:28px;font-weight:800;color:var(--primary);">${uniqueMenus}</div>
+                        <div style="font-size:12px;color:var(--text-light);">🍽️ Menu Tersedia</div>
+                    </div>
+                    <div style="background:var(--bg);padding:18px;border-radius:var(--radius-sm);text-align:center;">
+                        <div style="font-size:28px;font-weight:800;color:var(--primary);">${totalItems}</div>
+                        <div style="font-size:12px;color:var(--text-light);">🛒 Item Terjual</div>
+                    </div>
+                </div>
+                <div style="margin-top:12px;padding:12px;background:rgba(111,78,55,0.05);border-radius:var(--radius-sm);text-align:center;font-size:13px;color:var(--text-light);">
+                    📈 Rata-rata transaksi: Rp${formatNumber(Math.round(avgTx))}
+                </div>
+            `;
+        }
+
+        // Settings Page
+        function renderSettings() {
+            const user = state.currentUser;
+            if (user) {
+                $('#settings-name').value = user.name;
+                $('#settings-email').value = user.email || '';
+                $('#settings-role').value = user.role;
+                $('#settings-notif').value = DATA.settings.notifications || 'all';
+                $('#settings-period').value = DATA.settings.defaultPeriod || 'month';
+            }
+        }
+
+        // ==============================
+        // ===== CRUD FUNCTIONS =====
+        // ==============================
+        function deleteTransaction(id) {
+            if (confirm('🗑️ Hapus transaksi ini?')) {
+                DATA.transactions = DATA.transactions.filter(t => t.id !== id);
+                renderAll();
+                showNotification('✅ Transaksi berhasil dihapus', 'success');
+            }
+        }
+
+        function editStock(id) {
+            const stock = DATA.stocks.find(s => s.id === id);
+            if (!stock) return;
+            
+            const newQty = prompt(`✏️ Edit stok "${stock.name}" (${stock.branch}):`, stock.qty);
+            if (newQty !== null && !isNaN(newQty) && Number(newQty) >= 0) {
+                stock.qty = Number(newQty);
+                stock.status = stock.qty > 30 ? 'baik' : stock.qty > 15 ? 'sedang' : 'kritis';
+                renderAll();
+                showNotification('✅ Stok berhasil diupdate', 'success');
+            }
+        }
+
+        // ==============================
+        // ===== MODAL FUNCTIONS =====
+        // ==============================
+        function showModal(title, bodyHTML) {
+            const modal = $('#modal');
+            $('#modal-title').textContent = title;
+            $('#modal-body').innerHTML = bodyHTML;
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            $('#modal').classList.remove('show');
+            $('#modal-body').innerHTML = '';
+        }
+
+        function showAddTransaction() {
+            showModal('➕ Tambah Transaksi', `
+                <form id="add-transaction-form">
+                    <div class="form-group">
+                        <label>📍 Cabang</label>
+                        <select id="tx-branch" required>
+                            ${DATA.branches.map(b => `<option value="${b.name}">${b.name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>🍽️ Menu</label>
+                        <select id="tx-menu" required>
+                            ${DATA.menu.map(m => `<option value="${m.name}">${m.name} (Rp${formatNumber(m.price)})</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>📦 Jumlah</label>
+                        <input type="number" id="tx-qty" value="1" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>💰 Harga (Rp)</label>
+                        <input type="number" id="tx-price" value="25000" min="1000" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" onclick="closeModal()">❌ Batal</button>
+                        <button type="submit" class="btn btn-primary">💾 Simpan</button>
+                    </div>
+                </form>
+            `);
+            
+            $('#add-transaction-form').onsubmit = (e) => {
+                e.preventDefault();
+                const branch = $('#tx-branch').value;
+                const menu = $('#tx-menu').value;
+                const qty = parseInt($('#tx-qty').value);
+                const price = parseInt($('#tx-price').value);
+                
+                DATA.transactions.push({
+                    id: DATA._nextTxId++,
+                    date: new Date().toISOString(),
+                    branch,
+                    menu,
+                    qty,
+                    total: qty * price,
+                    status: 'sukses'
+                });
+                
+                closeModal();
+                renderAll();
+                showNotification('✅ Transaksi berhasil ditambahkan', 'success');
+            };
+        }
+
+        function showAddStock() {
+            showModal('📥 Tambah Stok', `
+                <form id="add-stock-form">
+                    <div class="form-group">
+                        <label>📦 Nama Bahan</label>
+                        <input type="text" id="stock-name" placeholder="Nama bahan baku" required>
+                    </div>
+                    <div class="form-group">
+                        <label>🔢 Jumlah</label>
+                        <input type="number" id="stock-qty" value="10" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>📏 Satuan</label>
+                        <select id="stock-unit">
+                            <option value="kg">kg</option>
+                            <option value="liter">liter</option>
+                            <option value="gram">gram</option>
+                            <option value="pcs">pcs</option>
+                            <option value="pack">pack</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>📍 Cabang</label>
+                        <select id="stock-branch" required>
+                            ${DATA.branches.map(b => `<option value="${b.name}">${b.name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>🏢 Supplier</label>
+                        <input type="text" id="stock-supplier" placeholder="Nama supplier" value="PT Kopi Jaya">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" onclick="closeModal()">❌ Batal</button>
+                        <button type="submit" class="btn btn-primary">💾 Simpan</button>
+                    </div>
+                </form>
+            `);
+            
+            $('#add-stock-form').onsubmit = (e) => {
+                e.preventDefault();
+                const name = $('#stock-name').value.trim();
+                const qty = parseInt($('#stock-qty').value);
+                const unit = $('#stock-unit').value;
+                const branch = $('#stock-branch').value;
+                const supplier = $('#stock-supplier').value.trim();
+                
+                DATA.stocks.push({
+                    id: DATA._nextStockId++,
+                    name,
+                    qty,
+                    unit,
+                    branch,
+                    status: qty > 30 ? 'baik' : qty > 15 ? 'sedang' : 'kritis',
+                    minStock: 10
+                });
+                
+                DATA.stockAdditions.push({
+                    id: DATA._nextAddId++,
+                    name,
+                    qty,
+                    unit,
+                    branch,
+                    date: new Date().toISOString(),
+                    supplier: supplier || 'Tidak diketahui'
+                });
+                
+                closeModal();
+                renderAll();
+                showNotification('✅ Stok berhasil ditambahkan', 'success');
+            };
+        }
+
+        function showAddBranch() {
+            showModal('📍 Tambah Cabang', `
+                <form id="add-branch-form">
+                    <div class="form-group">
+                        <label>🏪 Nama Cabang</label>
+                        <input type="text" id="branch-name" placeholder="Kopi Nusantara - Lokasi" required>
+                    </div>
+                    <div class="form-group">
+                        <label>📍 Lokasi</label>
+                        <input type="text" id="branch-location" placeholder="Kota / Daerah" required>
+                    </div>
+                    <div class="form-group">
+                        <label>📌 Alamat Lengkap</label>
+                        <textarea id="branch-address" rows="2" placeholder="Alamat lengkap cabang"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" onclick="closeModal()">❌ Batal</button>
+                        <button type="submit" class="btn btn-primary">💾 Simpan</button>
+                    </div>
+                </form>
+            `);
+            
+            $('#add-branch-form').onsubmit = (e) => {
+                e.preventDefault();
+                const name = $('#branch-name').value.trim();
+                const location = $('#branch-location').value.trim();
+                
+                DATA.branches.push({
+                    id: DATA.branches.length + 1,
+                    name,
+                    location,
+                    address: $('#branch-address').value.trim()
+                });
+                
+                populateBranchSelector();
+                populateReportBranch();
+                closeModal();
+                renderAll();
+                showNotification('✅ Cabang berhasil ditambahkan', 'success');
+            };
+        }
+
+        // ==============================
+        // ===== EXPORT FUNCTIONS =====
+        // ==============================
+        function exportData() {
+            const transactions = getFilteredTransactions();
+            if (transactions.length === 0) {
+                showNotification('⚠️ Tidak ada data untuk diexport', 'warning');
+                return;
+            }
+            
+            let csv = 'ID,Tanggal,Cabang,Menu,Jumlah,Total,Status\n';
+            transactions.forEach(t => {
+                csv += `${t.id},${formatDate(t.date)},${t.branch},${t.menu},${t.qty},${t.total},${t.status}\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `transaksi_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('📤 Data berhasil diexport', 'success');
+        }
+
+        function exportAllData() {
+            const data = {
+                transactions: DATA.transactions,
+                stocks: DATA.stocks,
+                stockAdditions: DATA.stockAdditions,
+                branches: DATA.branches,
+                menu: DATA.menu,
+                exportedAt: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `kopi_nusantara_backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('📤 Semua data berhasil diexport', 'success');
+        }
+
+        function generateReport(type) {
+            const period = $('#report-period').value;
+            const branchId = $('#report-branch').value;
+            
+            let tx = [...DATA.transactions];
+            
+            if (branchId !== 'all') {
+                const branchName = DATA.branches.find(b => b.id == branchId)?.name;
+                if (branchName) {
+                    tx = tx.filter(t => t.branch === branchName);
+                }
+            }
+            
+            tx = getTransactionsByPeriod(period, tx);
+            
+            if (tx.length === 0) {
+                showNotification('⚠️ Tidak ada data untuk periode ini', 'warning');
+                return;
+            }
+            
+            const totalIncome = tx.reduce((sum, t) => sum + t.total, 0);
+            const totalTx = tx.length;
+            const avgTx = totalTx > 0 ? totalIncome / totalTx : 0;
+            const totalItems = tx.reduce((sum, t) => sum + t.qty, 0);
+            
+            const preview = $('#report-preview');
+            preview.innerHTML = `
+                <div style="background:white;padding:24px;border-radius:var(--radius-sm);border:2px solid var(--primary);">
+                    <h3 style="color:var(--primary);margin-bottom:16px;font-size:20px;">📄 Laporan Keuangan</h3>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div><strong>📅 Periode:</strong> ${getPeriodLabel(period)}</div>
+                        <div><strong>🏪 Cabang:</strong> ${branchId === 'all' ? 'Semua' : DATA.branches.find(b => b.id == branchId)?.name || 'Semua'}</div>
+                        <div><strong>🧾 Total Transaksi:</strong> ${totalTx}</div>
+                        <div><strong>💰 Total Pemasukan:</strong> Rp${formatNumber(totalIncome)}</div>
+                        <div><strong>📊 Rata-rata:</strong> Rp${formatNumber(Math.round(avgTx))}</div>
+                        <div><strong>🛒 Total Item:</strong> ${totalItems}</div>
+                    </div>
+                    <hr style="margin:16px 0;border-color:var(--border);">
+                    <div style="font-size:13px;color:var(--text-light);display:flex;justify-content:space-between;">
+                        <span>📋 ${tx.length} transaksi</span>
+                        <span>🍽️ ${new Set(tx.map(t => t.menu)).size} menu terjual</span>
+                        <span>🏪 ${new Set(tx.map(t => t.branch)).size} cabang</span>
+                    </div>
+                    <div style="margin-top:12px;font-size:11px;color:var(--text-light);text-align:center;border-top:1px solid var(--border);padding-top:8px;">
+                        📅 Generated: ${new Date().toLocaleString()}
+                    </div>
+                </div>
+            `;
+            
+            if (type === 'print') {
+                setTimeout(() => window.print(), 300);
+            } else if (type === 'pdf') {
+                showNotification('📄 Fitur PDF akan segera tersedia', 'info');
+            } else if (type === 'excel') {
+                exportData();
+            }
+            
+            showNotification(`📊 Laporan ${getPeriodLabel(period)} berhasil digenerate`, 'success');
+        }
+
+        // ==============================
+        // ===== SETTINGS FUNCTIONS =====
+        // ==============================
+        function saveSettings() {
+            const name = $('#settings-name').value.trim();
+            const email = $('#settings-email').value.trim();
+            
+            if (state.currentUser) {
+                state.currentUser.name = name;
+                state.currentUser.email = email;
+                
+                const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+                $('#user-avatar').textContent = initials;
+                $('#user-name').textContent = name;
+                
+                DATA.settings.notifications = $('#settings-notif').value;
+                DATA.settings.defaultPeriod = $('#settings-period').value;
+                
+                showNotification('✅ Pengaturan berhasil disimpan', 'success');
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.body.classList.toggle('dark');
+            const themeBtn = document.querySelector('.theme-toggle');
+            themeBtn.textContent = isDark ? '☀️' : '🌙';
+            DATA.settings.theme = isDark ? 'dark' : 'light';
+        }
+
+        function resetData() {
+            if (confirm('⚠️ Reset semua data ke default? Data yang ada akan hilang!')) {
+                DATA.transactions = [];
+                DATA.stocks = [];
+                DATA.stockAdditions = [];
+                DATA._nextTxId = 1;
+                DATA._nextStockId = 1;
+                DATA._nextAddId = 1;
+                initData();
+                renderAll();
+                showNotification('🔄 Data berhasil direset', 'success');
+            }
+        }
+
+        // ==============================
+        // ===== REFRESH =====
+        // ==============================
+        function refreshData() {
+            renderAll();
+            showNotification('🔄 Data berhasil direfresh', 'success');
+        }
+
+        // ==============================
+        // ===== MAIN RENDER =====
+        // ==============================
+        function renderAll() {
+            renderDashboard();
+            renderIncome();
+            renderTransactions();
+            renderStock();
+            renderStockAdditions();
+            renderTopMenu();
+            renderBranches();
+            renderReports();
+            renderSettings();
+        }
+
+        // ==============================
+        // ===== INITIALIZATION =====
+        // ==============================
+        function init() {
+            if (DATA.transactions.length === 0) {
+                initData();
+            }
+            
+            $('#login-form').onsubmit = handleLogin;
+            $('#logout-btn').onclick = handleLogout;
+            
+            $$('.nav-item').forEach(btn => {
+                btn.onclick = () => navigateTo(btn.dataset.page);
+            });
+            
+            setupSidebarNav();
+            setupPeriodButtons();
+            
+            $('#login-page').style.display = 'flex';
+            $('#app').style.display = 'none';
+            
+            $('#modal').onclick = (e) => {
+                if (e.target === $('#modal')) closeModal();
+            };
+            
+            document.onkeydown = (e) => {
+                if (e.key === 'Escape') closeModal();
+            };
+            
+            if (DATA.settings.theme === 'dark') {
+                toggleTheme();
+            }
+
+            // Handle resize for sidebar
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768 && state.isSidebarOpen) {
+                    closeSidebar();
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
