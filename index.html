@@ -3,107 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🍉 Fruit Spin • Game Slot Edukasi</title>
+    <title>🤠 WANTED • Poster Permanen</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="game-container">
-        <h1>🍒 Fruit Spin</h1>
-        <p class="subtitle">✨ Spin & dapatkan kombinasi buah terbanyak!</p>
+    <div class="container">
+        <h1>🤠 WANTED</h1>
+        <p class="subtitle">Poster permanen • tidak bisa diubah</p>
 
-        <!-- Skor & Koin -->
-        <div class="stats">
-            <div class="stat-box">
-                <span>⭐ Skor</span>
-                <span id="scoreDisplay">0</span>
-            </div>
-            <div class="stat-box">
-                <span>🔄 Spin</span>
-                <span id="spinCount">0</span>
-            </div>
-            <div class="stat-box">
-                <span>🏆 Combo</span>
-                <span id="comboDisplay">0</span>
-            </div>
-        </div>
-
-        <!-- Mesin Slot -->
-        <div class="slot-machine">
-            <div class="reels-container">
-                <div class="reel" id="reel1">
-                    <div class="reel-inner">
-                        <div class="fruit-item">🍒</div>
-                        <div class="fruit-item">🍋</div>
-                        <div class="fruit-item">🍊</div>
-                        <div class="fruit-item">🍉</div>
-                        <div class="fruit-item">🍇</div>
-                        <div class="fruit-item">🍓</div>
-                        <div class="fruit-item">🍒</div>
-                        <div class="fruit-item">🍋</div>
-                        <div class="fruit-item">🍊</div>
-                        <div class="fruit-item">🍉</div>
-                        <div class="fruit-item">🍇</div>
-                        <div class="fruit-item">🍓</div>
+        <div class="poster-wrapper">
+            <!-- Stiker Wanted -->
+            <div class="wanted-stiker" id="stikerWanted">
+                <div class="stiker-header">★ WANTED ★</div>
+                
+                <div class="foto-container">
+                    <div class="foto" id="fotoWanted">
+                        <!-- Foto akan diisi oleh JS -->
                     </div>
                 </div>
-                <div class="reel" id="reel2">
-                    <div class="reel-inner">
-                        <div class="fruit-item">🍋</div>
-                        <div class="fruit-item">🍊</div>
-                        <div class="fruit-item">🍉</div>
-                        <div class="fruit-item">🍇</div>
-                        <div class="fruit-item">🍓</div>
-                        <div class="fruit-item">🍒</div>
-                        <div class="fruit-item">🍋</div>
-                        <div class="fruit-item">🍊</div>
-                        <div class="fruit-item">🍉</div>
-                        <div class="fruit-item">🍇</div>
-                        <div class="fruit-item">🍓</div>
-                        <div class="fruit-item">🍒</div>
-                    </div>
+
+                <div class="nama" id="namaWanted">
+                    <!-- Nama akan diisi oleh JS -->
                 </div>
-                <div class="reel" id="reel3">
-                    <div class="reel-inner">
-                        <div class="fruit-item">🍊</div>
-                        <div class="fruit-item">🍉</div>
-                        <div class="fruit-item">🍇</div>
-                        <div class="fruit-item">🍓</div>
-                        <div class="fruit-item">🍒</div>
-                        <div class="fruit-item">🍋</div>
-                        <div class="fruit-item">🍊</div>
-                        <div class="fruit-item">🍉</div>
-                        <div class="fruit-item">🍇</div>
-                        <div class="fruit-item">🍓</div>
-                        <div class="fruit-item">🍒</div>
-                        <div class="fruit-item">🍋</div>
-                    </div>
+
+                <div class="gelar" id="gelarWanted">
+                    <!-- Gelar akan diisi oleh JS -->
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="info-row">
+                    <span class="label">⚖️ Kejahatan</span>
+                    <span class="value" id="kejahatanWanted">PENJAHAT KELAMIN</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="label">💰 Hadiah</span>
+                    <span class="value" id="hadiahWanted">$1.000.000</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="label">📍 Terakhir</span>
+                    <span class="value" id="lokasiWanted">MANDATI TONGGA</span>
+                </div>
+
+                <div class="ciri" id="ciriWanted">
+                    📌 Berkacamata hitam
+                </div>
+
+                <div class="footer-stiker">
+                    ⭐ LAPORKAN SEGERA ⭐
                 </div>
             </div>
-            <!-- Garis kemenangan -->
-            <div class="winning-line"></div>
+
+            <!-- Tombol Download -->
+            <button id="downloadBtn" class="btn-download">⬇️ Download Poster</button>
         </div>
 
-        <!-- Tombol Spin -->
-        <button id="spinBtn" class="spin-btn">🎰 SPIN!</button>
-
-        <!-- Hasil -->
-        <div class="result-box" id="resultDisplay">
-            🎯 Tekan SPIN untuk mulai!
+        <!-- Informasi -->
+        <div class="info-footer">
+            <p>🔒 Poster ini sudah di-<strong>hardcode</strong> dan tidak dapat diubah oleh siapapun</p>
+            <p class="credit">Untuk mengubah, edit file <strong>script.js</strong></p>
         </div>
-
-        <!-- Info Kombinasi -->
-        <div class="combo-info">
-            <div class="combo-item">🍒🍒🍒 = 50 poin</div>
-            <div class="combo-item">🍋🍋🍋 = 40 poin</div>
-            <div class="combo-item">🍊🍊🍊 = 30 poin</div>
-            <div class="combo-item">🍉🍉🍉 = 25 poin</div>
-            <div class="combo-item">🍇🍇🍇 = 20 poin</div>
-            <div class="combo-item">🍓🍓🍓 = 15 poin</div>
-            <div class="combo-item">✨ 2 sama = 5 poin</div>
-        </div>
-
-        <!-- Tombol Reset -->
-        <button id="resetBtn" class="reset-btn">⟳ Reset Skor</button>
     </div>
 
     <script src="script.js"></script>
