@@ -3,436 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎯 Tebak Angka • Game Sederhana</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            padding: 1rem;
-        }
-
-        .game-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 2.5rem;
-            padding: 2.5rem 2rem;
-            max-width: 550px;
-            width: 100%;
-            box-shadow: 0 25px 40px -10px rgba(0, 0, 0, 0.7);
-            transition: 0.3s ease;
-            text-align: center;
-            color: #f1f5f9;
-        }
-
-        h1 {
-            font-weight: 600;
-            font-size: 2.2rem;
-            letter-spacing: 1px;
-            margin-bottom: 0.25rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        h1 span {
-            background: #facc15;
-            color: #0f172a;
-            font-size: 1.1rem;
-            font-weight: 700;
-            padding: 0.1rem 0.9rem;
-            border-radius: 40px;
-        }
-
-        .subhead {
-            color: #94a3b8;
-            margin-bottom: 2rem;
-            font-size: 1rem;
-            border-bottom: 1px dashed #334155;
-            padding-bottom: 0.75rem;
-        }
-
-        .range-box {
-            background: #1e293b;
-            padding: 0.8rem 1.2rem;
-            border-radius: 60px;
-            display: inline-block;
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #facc15;
-            box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
-            margin-bottom: 1.8rem;
-        }
-
-        .range-box i {
-            font-style: normal;
-            color: #cbd5e1;
-        }
-
-        .guess-area {
-            background: #0b1120;
-            border-radius: 60px;
-            padding: 0.3rem 0.3rem 0.3rem 1.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.5rem;
-            margin-bottom: 1.8rem;
-            border: 1px solid #334155;
-            transition: 0.2s;
-        }
-
-        .guess-area:focus-within {
-            border-color: #facc15;
-            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
-        }
-
-        #guessInput {
-            background: transparent;
-            border: none;
-            padding: 0.9rem 0.2rem;
-            font-size: 1.2rem;
-            width: 80px;
-            color: #f8fafc;
-            font-weight: 600;
-            text-align: center;
-            outline: none;
-        }
-
-        #guessInput::-webkit-outer-spin-button,
-        #guessInput::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        #guessInput[type="number"] {
-            -moz-appearance: textfield;
-        }
-
-        #guessBtn {
-            background: #facc15;
-            border: none;
-            color: #0f172a;
-            font-weight: 700;
-            padding: 0.8rem 1.8rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: 0.15s;
-            box-shadow: 0 6px 0 #b8960f;
-            transform: translateY(0);
-            letter-spacing: 0.3px;
-        }
-
-        #guessBtn:active {
-            transform: translateY(6px);
-            box-shadow: 0 1px 0 #b8960f;
-        }
-
-        #guessBtn:disabled {
-            opacity: 0.4;
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 #b8960f;
-            pointer-events: none;
-        }
-
-        .message-box {
-            background: #1e293b;
-            padding: 1rem 1.2rem;
-            border-radius: 40px;
-            min-height: 5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.8rem;
-            font-size: 1.2rem;
-            font-weight: 500;
-            border-left: 6px solid #facc15;
-            word-break: break-word;
-        }
-
-        .status-chip {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            gap: 1.2rem 2rem;
-            background: #0f172a;
-            padding: 0.8rem 1.2rem;
-            border-radius: 60px;
-            margin-bottom: 1.8rem;
-            border: 1px solid #2d3a4f;
-        }
-
-        .status-chip div {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .status-chip span {
-            font-weight: 700;
-            color: #facc15;
-            font-size: 1.2rem;
-        }
-
-        .attempt-badge {
-            background: #2d3a4f;
-            padding: 0.2rem 0.9rem;
-            border-radius: 40px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .btn-reset {
-            background: transparent;
-            border: 1.5px solid #475569;
-            color: #e2e8f0;
-            padding: 0.7rem 2rem;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: #1e293b;
-        }
-
-        .btn-reset:hover {
-            background: #334155;
-            border-color: #94a3b8;
-            transform: scale(1.02);
-        }
-
-        .btn-reset:active {
-            transform: scale(0.96);
-        }
-
-        .footer-hint {
-            margin-top: 1.2rem;
-            font-size: 0.85rem;
-            color: #64748b;
-        }
-
-        @media (max-width: 480px) {
-            .game-card { padding: 1.8rem 1.2rem; }
-            h1 { font-size: 1.8rem; }
-            .guess-area { padding-left: 1rem; flex-wrap: wrap; justify-content: center; background: #0b1120; }
-            #guessInput { width: 100px; }
-            #guessBtn { width: 100%; justify-content: center; padding: 0.9rem; }
-        }
-    </style>
+    <title>🍉 Fruit Spin • Game Slot Edukasi</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="game-card">
-        <h1>
-            🎯 Tebak
-            <span>1–100</span>
-        </h1>
-        <div class="subhead">🔮 coba tebak angka rahasia</div>
+    <div class="game-container">
+        <h1>🍒 Fruit Spin</h1>
+        <p class="subtitle">✨ Spin & dapatkan kombinasi buah terbanyak!</p>
 
-        <!-- range info -->
-        <div class="range-box">
-            <i>🎯</i> 1 — 100
+        <!-- Skor & Koin -->
+        <div class="stats">
+            <div class="stat-box">
+                <span>⭐ Skor</span>
+                <span id="scoreDisplay">0</span>
+            </div>
+            <div class="stat-box">
+                <span>🔄 Spin</span>
+                <span id="spinCount">0</span>
+            </div>
+            <div class="stat-box">
+                <span>🏆 Combo</span>
+                <span id="comboDisplay">0</span>
+            </div>
         </div>
 
-        <!-- input & button -->
-        <div class="guess-area">
-            <input type="number" id="guessInput" placeholder="?" min="1" max="100" value="" autofocus>
-            <button id="guessBtn">Tebak!</button>
+        <!-- Mesin Slot -->
+        <div class="slot-machine">
+            <div class="reels-container">
+                <div class="reel" id="reel1">
+                    <div class="reel-inner">
+                        <div class="fruit-item">🍒</div>
+                        <div class="fruit-item">🍋</div>
+                        <div class="fruit-item">🍊</div>
+                        <div class="fruit-item">🍉</div>
+                        <div class="fruit-item">🍇</div>
+                        <div class="fruit-item">🍓</div>
+                        <div class="fruit-item">🍒</div>
+                        <div class="fruit-item">🍋</div>
+                        <div class="fruit-item">🍊</div>
+                        <div class="fruit-item">🍉</div>
+                        <div class="fruit-item">🍇</div>
+                        <div class="fruit-item">🍓</div>
+                    </div>
+                </div>
+                <div class="reel" id="reel2">
+                    <div class="reel-inner">
+                        <div class="fruit-item">🍋</div>
+                        <div class="fruit-item">🍊</div>
+                        <div class="fruit-item">🍉</div>
+                        <div class="fruit-item">🍇</div>
+                        <div class="fruit-item">🍓</div>
+                        <div class="fruit-item">🍒</div>
+                        <div class="fruit-item">🍋</div>
+                        <div class="fruit-item">🍊</div>
+                        <div class="fruit-item">🍉</div>
+                        <div class="fruit-item">🍇</div>
+                        <div class="fruit-item">🍓</div>
+                        <div class="fruit-item">🍒</div>
+                    </div>
+                </div>
+                <div class="reel" id="reel3">
+                    <div class="reel-inner">
+                        <div class="fruit-item">🍊</div>
+                        <div class="fruit-item">🍉</div>
+                        <div class="fruit-item">🍇</div>
+                        <div class="fruit-item">🍓</div>
+                        <div class="fruit-item">🍒</div>
+                        <div class="fruit-item">🍋</div>
+                        <div class="fruit-item">🍊</div>
+                        <div class="fruit-item">🍉</div>
+                        <div class="fruit-item">🍇</div>
+                        <div class="fruit-item">🍓</div>
+                        <div class="fruit-item">🍒</div>
+                        <div class="fruit-item">🍋</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Garis kemenangan -->
+            <div class="winning-line"></div>
         </div>
 
-        <!-- pesan -->
-        <div class="message-box" id="messageDisplay">
-            💡 Masukkan angka lalu tekan Tebak
+        <!-- Tombol Spin -->
+        <button id="spinBtn" class="spin-btn">🎰 SPIN!</button>
+
+        <!-- Hasil -->
+        <div class="result-box" id="resultDisplay">
+            🎯 Tekan SPIN untuk mulai!
         </div>
 
-        <!-- status -->
-        <div class="status-chip">
-            <div>🎲 <span id="attemptDisplay">0</span></div>
-            <div class="attempt-badge">💬 <span id="hintDisplay">-</span></div>
+        <!-- Info Kombinasi -->
+        <div class="combo-info">
+            <div class="combo-item">🍒🍒🍒 = 50 poin</div>
+            <div class="combo-item">🍋🍋🍋 = 40 poin</div>
+            <div class="combo-item">🍊🍊🍊 = 30 poin</div>
+            <div class="combo-item">🍉🍉🍉 = 25 poin</div>
+            <div class="combo-item">🍇🍇🍇 = 20 poin</div>
+            <div class="combo-item">🍓🍓🍓 = 15 poin</div>
+            <div class="combo-item">✨ 2 sama = 5 poin</div>
         </div>
 
-        <!-- reset -->
-        <button class="btn-reset" id="resetBtn">⟳ Mulai ulang</button>
-        <div class="footer-hint">⬆️ tebakan lebih tinggi • ⬇️ lebih rendah</div>
+        <!-- Tombol Reset -->
+        <button id="resetBtn" class="reset-btn">⟳ Reset Skor</button>
     </div>
 
-    <script>
-        (function() {
-            "use strict";
-
-            // --- DOM refs ---
-            const guessInput = document.getElementById('guessInput');
-            const guessBtn = document.getElementById('guessBtn');
-            const resetBtn = document.getElementById('resetBtn');
-            const messageDisplay = document.getElementById('messageDisplay');
-            const attemptDisplay = document.getElementById('attemptDisplay');
-            const hintDisplay = document.getElementById('hintDisplay');
-
-            // --- state ---
-            let secretNumber = 0;
-            let attempts = 0;
-            let gameOver = false;
-
-            // --- helpers ---
-            function getRandomInt(min, max) {
-                return Math.floor(Math.random() * (max - min + 1)) + min;
-            }
-
-            // reset / start baru
-            function resetGame() {
-                secretNumber = getRandomInt(1, 100);
-                attempts = 0;
-                gameOver = false;
-                guessInput.value = '';
-                guessInput.disabled = false;
-                guessBtn.disabled = false;
-                guessInput.focus();
-                messageDisplay.innerHTML = '🔄 Angka baru siap! Coba tebak.';
-                attemptDisplay.textContent = '0';
-                hintDisplay.textContent = '❓';
-                // hapus style warna (biarkan default)
-                messageDisplay.style.color = '#f1f5f9';
-                messageDisplay.style.borderLeftColor = '#facc15';
-                // log (optional)
-                console.log(`[🔐] angka rahasia: ${secretNumber}`);
-            }
-
-            // cek tebakan
-            function handleGuess() {
-                // 1. cegah jika game over
-                if (gameOver) {
-                    messageDisplay.innerHTML = '⛔ Permainan selesai. Tekan "Mulai ulang" untuk bermain lagi.';
-                    guessInput.value = '';
-                    return;
-                }
-
-                // 2. ambil nilai input
-                const rawValue = guessInput.value.trim();
-                if (rawValue === '') {
-                    messageDisplay.innerHTML = '📝 Masukkan angka dulu!';
-                    guessInput.focus();
-                    return;
-                }
-
-                const guess = Number(rawValue);
-                // 3. validasi angka
-                if (!Number.isInteger(guess) || guess < 1 || guess > 100) {
-                    messageDisplay.innerHTML = '⚠️ Masukkan angka bulat antara 1 – 100.';
-                    guessInput.value = '';
-                    guessInput.focus();
-                    return;
-                }
-
-                // 4. validasi tambahan: apakah sudah pernah ditebak? (tidak wajib, tapi bagus)
-                // increment attempts
-                attempts++;
-                attemptDisplay.textContent = attempts;
-
-                // 5. bandingkan
-                let msg = '';
-                let hintSymbol = '';
-
-                if (guess === secretNumber) {
-                    // MENANG!
-                    gameOver = true;
-                    guessBtn.disabled = true;
-                    guessInput.disabled = true;
-                    msg = `🎉🎉 BENAR! Angka rahasia ${secretNumber}! 🎉🎉`;
-                    messageDisplay.style.color = '#bbf7d0';
-                    messageDisplay.style.borderLeftColor = '#4ade80';
-                    hintSymbol = '🎯';
-                    hintDisplay.textContent = '🎯';
-                    // optional: tambahan
-                } else if (guess < secretNumber) {
-                    msg = `📈 ${guess} terlalu rendah. Coba lagi!`;
-                    messageDisplay.style.color = '#fde047';
-                    messageDisplay.style.borderLeftColor = '#facc15';
-                    hintSymbol = '⬆️';
-                    hintDisplay.textContent = '⬆️ rendah';
-                } else { // guess > secretNumber
-                    msg = `📉 ${guess} terlalu tinggi. Coba lagi!`;
-                    messageDisplay.style.color = '#fca5a5';
-                    messageDisplay.style.borderLeftColor = '#f87171';
-                    hintSymbol = '⬇️';
-                    hintDisplay.textContent = '⬇️ tinggi';
-                }
-
-                messageDisplay.innerHTML = msg;
-                // update hint chip (hanya untuk status tambahan)
-                if (!gameOver) {
-                    // kita sudah set hintSymbol di atas
-                } else {
-                    // saat menang hintDisplay sudah '🎯'
-                }
-
-                // bersihkan input, fokus
-                guessInput.value = '';
-                guessInput.focus();
-
-                // jika gameOver, nonaktifkan tombol & input (sudah diatas)
-                // tapi jika menang, kita disable di dalam blok menang
-                // apabila belum menang, pastikan tombol & input aktif
-                if (!gameOver) {
-                    guessBtn.disabled = false;
-                    guessInput.disabled = false;
-                }
-
-                // tambahan: jika sudah menang, tampilkan pesan khusus
-                if (gameOver) {
-                    // message sudah di set
-                    // tambahan tombol reset jadi lebih menonjol (tidak perlu)
-                }
-            }
-
-            // --- event listeners ---
-            guessBtn.addEventListener('click', handleGuess);
-
-            // enter key pada input
-            guessInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    guessBtn.click();
-                }
-            });
-
-            // reset
-            resetBtn.addEventListener('click', function() {
-                resetGame();
-                // reset warna pesan
-                messageDisplay.style.color = '#f1f5f9';
-                messageDisplay.style.borderLeftColor = '#facc15';
-                // fokus
-                guessInput.focus();
-            });
-
-            // --- inisialisasi pertama ---
-            resetGame();
-
-            // (opsional) tidak mengizinkan karakter selain angka
-            guessInput.addEventListener('input', function() {
-                // jika user mengetik huruf atau karakter aneh, kita biarkan tapi nanti divalidasi
-                // bersihkan leading zero? tidak perlu
-                if (this.value.length > 3) {
-                    this.value = this.value.slice(0, 3);
-                }
-            });
-
-        })();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
