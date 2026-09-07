@@ -2,76 +2,43 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Super Mario Bros - Game Platformer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Tebak Angka • Game Sederhana</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="game-wrapper">
-        <div class="game-container">
-            <canvas id="gameCanvas" width="800" height="400"></canvas>
-            
-            <div class="game-info">
-                <div class="info-panel">
-                    <div class="info-item">
-                        <span class="info-icon">❤️</span>
-                        <span id="score">000000</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-icon">🍄</span>
-                        <span id="coins">00</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-icon">⏱️</span>
-                        <span id="time">300</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-icon">❤️</span>
-                        <span id="lives">3</span>
-                    </div>
-                </div>
-                <div class="world-info">
-                    WORLD <span id="world">1</span>-<span id="level">1</span>
-                </div>
-            </div>
-            
-            <div class="controls-panel">
-                <button class="control-btn" id="leftBtn">
-                    <i class="arrow">◀</i>
-                </button>
-                <button class="control-btn" id="rightBtn">
-                    <i class="arrow">▶</i>
-                </button>
-                <button class="control-btn" id="jumpBtn">
-                    ⬆️ Lompat
-                </button>
-                <button class="control-btn" id="resetBtn">
-                    🔄 Reset
-                </button>
-            </div>
-            
-            <div class="instructions">
-                <p>🎮 Keyboard: <kbd>◀</kbd> <kbd>▶</kbd> Gerak | <kbd>↑</kbd> Lompat | <kbd>R</kbd> Reset</p>
-                <p>📱 Mobile: Tekan tombol di layar</p>
-            </div>
+    <div class="game-card">
+        <h1>
+            🎯 Tebak
+            <span>1–100</span>
+        </h1>
+        <div class="subhead">🔮 coba tebak angka rahasia</div>
+
+        <!-- range info -->
+        <div class="range-box">
+            <i>🎯</i> 1 — 100
         </div>
-        
-        <div id="gameOverScreen" class="overlay-screen" style="display: none;">
-            <div class="overlay-content">
-                <h1>GAME OVER</h1>
-                <p>Skor: <span id="finalScore">0</span></p>
-                <button onclick="resetGame()">MAIN LAGI</button>
-            </div>
+
+        <!-- input & button -->
+        <div class="guess-area">
+            <input type="number" id="guessInput" placeholder="?" min="1" max="100" value="" autofocus>
+            <button id="guessBtn">Tebak!</button>
         </div>
-        
-        <div id="winScreen" class="overlay-screen" style="display: none;">
-            <div class="overlay-content">
-                <h1>🎉 YOU WIN! 🎉</h1>
-                <p>Selamat! Kamu menyelesaikan level!</p>
-                <button onclick="nextLevel()">LANJUT LEVEL ➡</button>
-            </div>
+
+        <!-- pesan -->
+        <div class="message-box" id="messageDisplay">
+            💡 Masukkan angka lalu tekan Tebak
         </div>
+
+        <!-- status -->
+        <div class="status-chip">
+            <div>🎲 <span id="attemptDisplay">0</span></div>
+            <div class="attempt-badge">💬 <span id="hintDisplay">-</span></div>
+        </div>
+
+        <!-- reset -->
+        <button class="btn-reset" id="resetBtn">⟳ Mulai ulang</button>
+        <div class="footer-hint">⬆️ tebakan lebih tinggi • ⬇️ lebih rendah</div>
     </div>
 
     <script src="script.js"></script>
