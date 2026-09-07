@@ -1,208 +1,163 @@
 (function() {
     "use strict";
 
+    // ==========================================
+    // 🔒 DATA HARCODE - TIDAK BISA DIUBAH
+    // ==========================================
+    
+    // Untuk mengubah, edit bagian ini:
+    const DATA = {
+        // NAMA - ubah sesuai keinginan
+        nama: 'RAMAN DZULFITRA',
+        
+        // GELAR / JULUKAN
+        gelar: '"EL CABUL"',
+        
+        // KEJAHATAN
+        kejahatan: 'PENJAHAT KELAMIN',
+        
+        // HADIAH (dengan format)
+        hadiah: '$1.000.000',
+        
+        // LOKASI TERAKHIR
+        lokasi: 'MANDATI TONGGA',
+        
+        // CIRI-CIRI
+        ciri: '📌 Berkacamata hitam',
+        
+        // FOTO - gunakan URL gambar atau base64
+        // Jika dikosongkan, akan menggunakan ikon default
+        foto: 'IMG-20260907-WA0014.jpg'
+        // foto: '' // kosongkan untuk menggunakan ikon default
+    };
+
+    // ==========================================
+    // JANGAN UBAH KODE DI BAWAH INI
+    // ==========================================
+
     // DOM Elements
-    const reel1 = document.getElementById('reel1');
-    const reel2 = document.getElementById('reel2');
-    const reel3 = document.getElementById('reel3');
-    const spinBtn = document.getElementById('spinBtn');
-    const resetBtn = document.getElementById('resetBtn');
-    const scoreDisplay = document.getElementById('scoreDisplay');
-    const spinCountDisplay = document.getElementById('spinCount');
-    const comboDisplay = document.getElementById('comboDisplay');
-    const resultDisplay = document.getElementById('resultDisplay');
+    const fotoContainer = document.getElementById('fotoWanted');
+    const namaElement = document.getElementById('namaWanted');
+    const gelarElement = document.getElementById('gelarWanted');
+    const kejahatanElement = document.getElementById('kejahatanWanted');
+    const hadiahElement = document.getElementById('hadiahWanted');
+    const lokasiElement = document.getElementById('lokasiWanted');
+    const ciriElement = document.getElementById('ciriWanted');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const stikerElement = document.getElementById('stikerWanted');
 
-    // State
-    let score = 0;
-    let spinCount = 0;
-    let combo = 0;
-    let isSpinning = false;
-
-    // Fruit list untuk random
-    const fruits = ['🍒', '🍋', '🍊', '🍉', '🍇', '🍓'];
-    const fruitNames = {
-        '🍒': 'Cherry',
-        '🍋': 'Lemon',
-        '🍊': 'Jeruk',
-        '🍉': 'Semangka',
-        '🍇': 'Anggur',
-        '🍓': 'Strawberry'
-    };
-
-    // Poin kombinasi
-    const comboPoints = {
-        '🍒🍒🍒': 50,
-        '🍋🍋🍋': 40,
-        '🍊🍊🍊': 30,
-        '🍉🍉🍉': 25,
-        '🍇🍇🍇': 20,
-        '🍓🍓🍓': 15
-    };
-
-    // Ambil fruit tengah dari reel
-    function getMiddleFruit(reelElement) {
-        const inner = reelElement.querySelector('.reel-inner');
-        const items = inner.querySelectorAll('.fruit-item');
-        // index ke-1 adalah tengah (karena 3 item terlihat)
-        return items[1] ? items[1].textContent : '🍒';
-    }
-
-    // Set posisi reel dengan animasi
-    function setReelPosition(reelElement, targetIndex, duration = 300) {
-        const inner = reelElement.querySelector('.reel-inner');
-        const itemHeight = 60; // height per item
-        const offset = targetIndex * itemHeight;
-        inner.style.transition = `transform ${duration}ms cubic-bezier(0.34, 1.56, 0.64, 1)`;
-        inner.style.transform = `translateY(-${offset}px)`;
-    }
-
-    // Random spin dengan efek
-    function spinReel(reelElement, callback) {
-        const inner = reelElement.querySelector('.reel-inner');
-        const totalItems = inner.querySelectorAll('.fruit-item').length;
+    // Render stiker dengan data hardcode
+    function renderStiker() {
+        // Set nama
+        namaElement.textContent = DATA.nama || 'UNKNOWN';
         
-        // Random posisi akhir (dengan efek berputar beberapa kali)
-        const spinCount = 5 + Math.floor(Math.random() * 5); // 5-10 putaran
-        const finalIndex = Math.floor(Math.random() * totalItems);
-        const totalOffset = (spinCount * totalItems + finalIndex);
+        // Set gelar
+        gelarElement.textContent = DATA.gelar || '';
         
-        const itemHeight = 60;
-        const offset = totalOffset * itemHeight;
+        // Set kejahatan
+        kejahatanElement.textContent = DATA.kejahatan || 'TIDAK DIKETAHUI';
         
-        inner.style.transition = `transform ${800 + Math.random() * 400}ms cubic-bezier(0.34, 1.56, 0.64, 1)`;
-        inner.style.transform = `translateY(-${offset}px)`;
+        // Set hadiah
+        hadiahElement.textContent = DATA.hadiah || '$0';
         
-        // Panggil callback setelah animasi selesai
-        setTimeout(() => {
-            // Reset ke posisi yang benar (modulo)
-            const normalizedIndex = totalOffset % totalItems;
-            const normalizedOffset = normalizedIndex * itemHeight;
-            inner.style.transition = 'none';
-            inner.style.transform = `translateY(-${normalizedOffset}px)`;
-            if (callback) callback(normalizedIndex);
-        }, 1200);
-    }
-
-    // Cek kombinasi 3 buah
-    function checkCombo(fruit1, fruit2, fruit3) {
-        const comboKey = fruit1 + fruit2 + fruit3;
+        // Set lokasi
+        lokasiElement.textContent = DATA.lokasi || 'TIDAK DIKETAHUI';
         
-        // Cek 3 sama
-        if (fruit1 === fruit2 && fruit2 === fruit3) {
-            const points = comboPoints[comboKey] || 10;
-            return {
-                isCombo: true,
-                points: points,
-                message: `🎉 JACKPOT! 3 ${fruitNames[fruit1]}! +${points} poin!`
-            };
+        // Set ciri
+        ciriElement.textContent = DATA.ciri || 'Tidak ada ciri khusus';
+        
+        // Set foto
+        if (DATA.foto && DATA.foto.trim() !== '') {
+            // Jika foto adalah URL atau base64
+            fotoContainer.innerHTML = `<img src="${DATA.foto}" alt="${DATA.nama}">`;
+        } else {
+            // Gunakan ikon default
+            fotoContainer.innerHTML = '👤';
+            fotoContainer.style.fontSize = '5.5rem';
         }
-        
-        // Cek 2 sama
-        if (fruit1 === fruit2 || fruit2 === fruit3 || fruit1 === fruit3) {
-            let matchFruit = fruit1 === fruit2 ? fruit1 : fruit3;
-            return {
-                isCombo: true,
-                points: 5,
-                message: `✨ 2 ${fruitNames[matchFruit]} sama! +5 poin`
-            };
-        }
-        
-        return {
-            isCombo: false,
-            points: 0,
-            message: `😅 ${fruitNames[fruit1]}, ${fruitNames[fruit2]}, ${fruitNames[fruit3]} - coba lagi!`
-        };
     }
 
-    // Main spin function
-    function performSpin() {
-        if (isSpinning) return;
-        isSpinning = true;
-        spinBtn.disabled = true;
-        spinBtn.textContent = '🌀 Spinning...';
-        resultDisplay.textContent = '🌀 Memutar...';
-
-        // Ambil 3 reel
-        const reels = [reel1, reel2, reel3];
-        let results = [];
-        let completed = 0;
-
-        // Spin setiap reel
-        reels.forEach((reel, index) => {
-            spinReel(reel, (finalIndex) => {
-                const fruit = getMiddleFruit(reel);
-                results[index] = fruit;
-                completed++;
-                
-                if (completed === 3) {
-                    // Semua reel selesai
-                    setTimeout(() => {
-                        const [f1, f2, f3] = results;
-                        const comboResult = checkCombo(f1, f2, f3);
-                        
-                        // Update skor
-                        if (comboResult.isCombo) {
-                            score += comboResult.points;
-                            combo++;
-                            comboDisplay.textContent = combo;
-                        }
-                        
-                        scoreDisplay.textContent = score;
-                        spinCount++;
-                        spinCountDisplay.textContent = spinCount;
-                        
-                        // Tampilkan hasil
-                        resultDisplay.innerHTML = comboResult.message;
-                        
-                        // Efek visual untuk jackpot
-                        if (comboResult.points >= 30) {
-                            resultDisplay.style.color = '#facc15';
-                            resultDisplay.style.fontSize = '1.3rem';
-                            setTimeout(() => {
-                                resultDisplay.style.color = '#fff';
-                                resultDisplay.style.fontSize = '1.1rem';
-                            }, 2000);
-                        } else {
-                            resultDisplay.style.color = '#fff';
-                            resultDisplay.style.fontSize = '1.1rem';
-                        }
-                        
-                        isSpinning = false;
-                        spinBtn.disabled = false;
-                        spinBtn.textContent = '🎰 SPIN!';
-                    }, 200);
-                }
+    // Download stiker sebagai PNG
+    function downloadStiker() {
+        // Load html2canvas dari CDN
+        loadHtml2Canvas()
+            .then(() => {
+                return html2canvas(stikerElement, {
+                    scale: 2.5,
+                    backgroundColor: null,
+                    allowTaint: true,
+                    useCORS: true,
+                    logging: false,
+                    borderRadius: '20px',
+                    shadow: true
+                });
+            })
+            .then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'WANTED-POSTER.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            })
+            .catch(() => {
+                alert('⚠️ Gagal download. Silakan screenshot manual.\n\nTekan: PrtScrn atau screenshot biasa.');
             });
+    }
+
+    // Load html2canvas dari CDN
+    function loadHtml2Canvas() {
+        return new Promise((resolve, reject) => {
+            if (typeof html2canvas !== 'undefined') {
+                resolve();
+                return;
+            }
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
         });
     }
 
-    // Reset game
-    function resetGame() {
-        if (isSpinning) return;
-        
-        score = 0;
-        spinCount = 0;
-        combo = 0;
-        
-        scoreDisplay.textContent = '0';
-        spinCountDisplay.textContent = '0';
-        comboDisplay.textContent = '0';
-        resultDisplay.innerHTML = '🔄 Skor direset! Tekan SPIN untuk mulai.';
-        resultDisplay.style.color = '#fff';
-        resultDisplay.style.fontSize = '1.1rem';
-        
-        // Reset posisi reel ke awal
-        [reel1, reel2, reel3].forEach(reel => {
-            const inner = reel.querySelector('.reel-inner');
-            inner.style.transition = 'none';
-            inner.style.transform = 'translateY(0)';
-        });
-    }
+    // Event listener untuk tombol download
+    downloadBtn.addEventListener('click', downloadStiker);
 
-    // Event Listeners
-    spinBtn.addEventListener('click', performSpin);
-    resetBtn.addEventListener('click', resetGame);
+    // Render stiker saat halaman dimuat
+    renderStiker();
 
-    // Inisialisasi awal
-    console.log('🍉 Fruit Spin Game Loaded!');
+    // Log untuk verifikasi
+    console.log('🤠 WANTED POSTER - Data sudah di-hardcode');
+    console.log('📋 Data:', DATA);
+    console.log('🔒 Tidak dapat diubah oleh orang lain');
+
+    // ==========================================
+    // TAMBAHAN: Proteksi dari perubahan
+    // ==========================================
+    
+    // Cegah klik kanan (opsional)
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // Cegah inspect element dengan shortcut (opsional)
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) {
+            e.preventDefault();
+        }
+        if (e.ctrlKey && e.shiftKey && (e.key === 'i' || e.key === 'I')) {
+            e.preventDefault();
+        }
+        if (e.key === 'F12') {
+            e.preventDefault();
+        }
+    });
+
 })();
+const DATA = {
+    nama: 'NAMA BARU',           // Ubah ini
+    gelar: '"Gelar Baru"',       // Ubah ini
+    kejahatan: 'KEJAHATAN BARU', // Ubah ini
+    hadiah: '$100.000',          // Ubah ini
+    lokasi: 'LOKASI BARU',       // Ubah ini
+    ciri: 'CIRI BARU',           // Ubah ini
+    foto: 'https://url-foto-baru.jpg' // Ubah ini
+};
