@@ -1,209 +1,229 @@
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    user-select: none;
 }
 
 body {
-    background: linear-gradient(135deg, #1a0a2e, #0f0f23);
+    font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Press Start 2P', 'Courier New', monospace;
-    overflow: hidden;
+    background: linear-gradient(145deg, #1e293b, #0f172a);
+    padding: 1rem;
 }
 
-.game-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-.game-container {
-    background: #000;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-}
-
-canvas {
-    display: block;
-    margin: 0 auto;
-    box-shadow: 0 0 20px rgba(0,0,0,0.3);
-    cursor: none;
-}
-
-.game-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
-    padding: 10px 15px;
-    background: #000;
-    border: 2px solid #ffd700;
-    border-radius: 8px;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 12px;
-}
-
-.info-panel {
-    display: flex;
-    gap: 20px;
-}
-
-.info-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    color: #fff;
-}
-
-.info-icon {
-    color: #ffd700;
-    font-size: 14px;
-}
-
-.world-info {
-    color: #ffd700;
-    font-size: 12px;
-}
-
-.controls-panel {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 15px;
-    flex-wrap: wrap;
-}
-
-.control-btn {
-    background: linear-gradient(135deg, #4a4a4a, #2a2a2a);
-    border: none;
-    color: white;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 14px;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 4px 0 #1a1a1a;
-}
-
-.control-btn:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 0 #1a1a1a;
-}
-
-.control-btn:hover {
-    background: linear-gradient(135deg, #6a6a6a, #4a4a4a);
-}
-
-.instructions {
-    margin-top: 15px;
-    text-align: center;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 9px;
-    color: #aaa;
-    background: rgba(0,0,0,0.7);
-    padding: 10px;
-    border-radius: 8px;
-}
-
-kbd {
-    background: #333;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: monospace;
-    margin: 0 2px;
-    color: #ffd700;
-}
-
-.arrow {
-    font-size: 16px;
-}
-
-.overlay-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
+.game-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2.5rem;
+    padding: 2.5rem 2rem;
+    max-width: 550px;
     width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    font-family: 'Press Start 2P', monospace;
-}
-
-.overlay-content {
+    box-shadow: 0 25px 40px -10px rgba(0, 0, 0, 0.7);
+    transition: 0.3s ease;
     text-align: center;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    padding: 40px;
-    border-radius: 20px;
-    color: white;
-    animation: bounce 0.5s ease;
+    color: #f1f5f9;
 }
 
-.overlay-content h1 {
-    font-size: 36px;
-    margin-bottom: 20px;
-    text-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+h1 {
+    font-weight: 600;
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
-.overlay-content p {
-    margin-bottom: 20px;
-    font-size: 18px;
+h1 span {
+    background: #facc15;
+    color: #0f172a;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 0.1rem 0.9rem;
+    border-radius: 40px;
 }
 
-.overlay-content button {
-    background: #ffd700;
-    color: #000;
+.subhead {
+    color: #94a3b8;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    border-bottom: 1px dashed #334155;
+    padding-bottom: 0.75rem;
+}
+
+.range-box {
+    background: #1e293b;
+    padding: 0.8rem 1.2rem;
+    border-radius: 60px;
+    display: inline-block;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #facc15;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
+    margin-bottom: 1.8rem;
+}
+
+.range-box i {
+    font-style: normal;
+    color: #cbd5e1;
+}
+
+.guess-area {
+    background: #0b1120;
+    border-radius: 60px;
+    padding: 0.3rem 0.3rem 0.3rem 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 1.8rem;
+    border: 1px solid #334155;
+    transition: 0.2s;
+}
+
+.guess-area:focus-within {
+    border-color: #facc15;
+    box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
+}
+
+#guessInput {
+    background: transparent;
     border: none;
-    padding: 12px 24px;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 14px;
-    border-radius: 8px;
+    padding: 0.9rem 0.2rem;
+    font-size: 1.2rem;
+    width: 80px;
+    color: #f8fafc;
+    font-weight: 600;
+    text-align: center;
+    outline: none;
+}
+
+#guessInput::-webkit-outer-spin-button,
+#guessInput::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+#guessInput[type="number"] {
+    -moz-appearance: textfield;
+}
+
+#guessBtn {
+    background: #facc15;
+    border: none;
+    color: #0f172a;
+    font-weight: 700;
+    padding: 0.8rem 1.8rem;
+    border-radius: 50px;
+    font-size: 1.1rem;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: 0.15s;
+    box-shadow: 0 6px 0 #b8960f;
+    transform: translateY(0);
+    letter-spacing: 0.3px;
 }
 
-.overlay-content button:hover {
-    transform: scale(1.05);
-    background: #ffed4a;
+#guessBtn:active {
+    transform: translateY(6px);
+    box-shadow: 0 1px 0 #b8960f;
 }
 
-@keyframes bounce {
-    0% { transform: scale(0.8); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
+#guessBtn:disabled {
+    opacity: 0.4;
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #b8960f;
+    pointer-events: none;
 }
 
-@media (max-width: 850px) {
-    .game-container {
-        transform: scale(0.9);
-    }
-    
-    .control-btn {
-        padding: 8px 16px;
-        font-size: 10px;
-    }
-    
-    .info-item {
-        font-size: 8px;
-    }
+.message-box {
+    background: #1e293b;
+    padding: 1rem 1.2rem;
+    border-radius: 40px;
+    min-height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.8rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    border-left: 6px solid #facc15;
+    word-break: break-word;
 }
 
-@media (max-width: 700px) {
-    .game-container {
-        transform: scale(0.8);
-    }
+.status-chip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem 2rem;
+    background: #0f172a;
+    padding: 0.8rem 1.2rem;
+    border-radius: 60px;
+    margin-bottom: 1.8rem;
+    border: 1px solid #2d3a4f;
 }
 
-@media (max-width: 550px) {
-    .game-container {
-        transform: scale(0.7);
-    }
+.status-chip div {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.status-chip span {
+    font-weight: 700;
+    color: #facc15;
+    font-size: 1.2rem;
+}
+
+.attempt-badge {
+    background: #2d3a4f;
+    padding: 0.2rem 0.9rem;
+    border-radius: 40px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.btn-reset {
+    background: transparent;
+    border: 1.5px solid #475569;
+    color: #e2e8f0;
+    padding: 0.7rem 2rem;
+    border-radius: 60px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #1e293b;
+}
+
+.btn-reset:hover {
+    background: #334155;
+    border-color: #94a3b8;
+    transform: scale(1.02);
+}
+
+.btn-reset:active {
+    transform: scale(0.96);
+}
+
+.footer-hint {
+    margin-top: 1.2rem;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+@media (max-width: 480px) {
+    .game-card { padding: 1.8rem 1.2rem; }
+    h1 { font-size: 1.8rem; }
+    .guess-area { padding-left: 1rem; flex-wrap: wrap; justify-content: center; background: #0b1120; }
+    #guessInput { width: 100px; }
+    #guessBtn { width: 100%; justify-content: center; padding: 0.9rem; }
 }
